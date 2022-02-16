@@ -4,6 +4,8 @@ var gCanvas;
 var gElCanvas;
 var gCtx;
 
+var gPaintColor ='black';
+var gBorderColor='black';
 var gMeme = {
   selectedImgId: 5,
   selectedLineIdx: 0,
@@ -16,6 +18,17 @@ var gMeme = {
     }
   ]
 };
+function drawText(x,y) {
+
+    gCtx.fillStyle = gPaintColor;
+    gCtx.strokeStyle = gBorderColor;
+    gCtx.lineWidth = 1;
+    gCtx.lineCap = "square";
+    gCtx.font = '48px serif';
+    gCtx.fillText('test1', 10, 50);
+    gCtx.strokeText('test1', 10, 50);
+
+}
 
 var gKeywordSearchCountMap = { funny: 12, cat: 16, baby: 2 };
 
@@ -52,6 +65,7 @@ function onDown() {
 function onUp() {
     
 }
+
 
 function doUploadImg(imgDataUrl, onSuccess) {
   const formData = new FormData();
