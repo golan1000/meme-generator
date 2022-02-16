@@ -8,12 +8,13 @@
     <title>Meme Generator</title>
   </head>
   <body onload="init()">
-    test
+    Meme Generator
 
     <div class="app">
       <div class="menu">
-        <button onclick="drawText(5,5)"">Fast button</button>
-        <input id="meme-text" type="text">
+        <button onclick="fastBtn()">Fast button</button>
+        <button onclick="addText()">Add Text</button>
+        <input id="meme-text" type="text" value="testtttt">
         <button type="button" class="" onclick="onClearCanvas()">clear</button>
         <span class="">inside color:</span>
         <input
@@ -27,14 +28,17 @@
           name="borderColor"
           oninput="onChangeBorderColor(event)"
         />
-        <button type="button" class="btn btn-primary" onclick="uploadImg()">
+        <button type="button" class="" onclick="uploadImg()">
           Upload
         </button>
-        <select name="shapes" id="shapes" onchange="onSelectShape(this)">
-          <option value="circle">Circle</option>
-          <option value="rectangle">Rectangle</option>
+        <select name="pos" id="pos" onchange="onSelectPos(this)">
+          <option value="up">up</option>
+          <option value="center">center</option>
+          <option value="down">down</option>
         </select>
-        <button type="button" class="btn btn-primary">about</button>
+        <button type="button" class="">about</button>
+        <button type="button" class="" onClick="onChangeTxtSize(1)">A++</button>
+        <button type="button" class=""  onClick="onChangeTxtSize(-1)">A--</button>
         <a href="#" onClick="downloadCanvasImg(this)">Download</a>
       </div>
       <div class="canvas-container">
@@ -46,10 +50,10 @@
       </div>
       <div class="gallery-con">
         <h1>gallery</h1>
-        <img onclick="onSelectImg(this)" src="img/1.jpg" />
-        <img onclick="onSelectImg(this)" src="img/2.jpg" />
-        <img onclick="onSelectImg(this)" src="img/3.jpg" />
-        <img onclick="onSelectImg(this)" src="img/test1.jpg" />
+        <img onclick="onSelectImg(1)" src="img/1.jpg" />
+        <img onclick="onSelectImg(2)" src="img/2.jpg" />
+        <img onclick="onSelectImg(3)" src="img/3.jpg" />
+        <img onclick="onSelectImg(4)" src="img/test1.jpg" />
       </div>
     </div>
 
