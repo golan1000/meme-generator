@@ -13,6 +13,7 @@
     <div class="app">
       <div class="menu">
         <button onclick="drawText(5,5)"">Fast button</button>
+        <input id="meme-text" type="text">
         <button type="button" class="" onclick="onClearCanvas()">clear</button>
         <span class="">inside color:</span>
         <input
@@ -23,7 +24,7 @@
         <span class="">border color:</span>
         <input
           type="color"
-          name="paintColor"
+          name="borderColor"
           oninput="onChangeBorderColor(event)"
         />
         <button type="button" class="btn btn-primary" onclick="uploadImg()">
@@ -48,6 +49,7 @@
         <img onclick="onSelectImg(this)" src="img/1.jpg" />
         <img onclick="onSelectImg(this)" src="img/2.jpg" />
         <img onclick="onSelectImg(this)" src="img/3.jpg" />
+        <img onclick="onSelectImg(this)" src="img/test1.jpg" />
       </div>
     </div>
 
