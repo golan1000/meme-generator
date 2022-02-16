@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
     <title>Meme Generator</title>
-</head>
-<body onload="init()">
+  </head>
+  <body onload="init()">
     test
+
+    <div class="app">
+      <div class="menu">
+        <button type="button" class="" onclick="onClearCanvas()">clear</button>
+        <span class="">inside color:</span>
+        <input
+          type="color"
+          name="paintColor"
+          oninput="onChangePaintColor(event)"
+        />
+        <span class="">border color:</span>
+        <input
+          type="color"
+          name="paintColor"
+          oninput="onChangeBorderColor(event)"
+        />
+        <button type="button" class="btn btn-primary" onclick="uploadImg()">
+          Upload
+        </button>
+        <select name="shapes" id="shapes" onchange="onSelectShape(this)">
+          <option value="circle">Circle</option>
+          <option value="rectangle">Rectangle</option>
+        </select>
+        <button type="button" class="btn btn-primary">about</button>
+        <a href="#" onClick="downloadCanvasImg(this)">Download</a>
+      </div>
+      <div class="canvas-container">
+        <canvas id="my-canvas" height="400" width="400"></canvas>
+      </div>
+      <div class="share">
+        <div class="system-messages"></div>
+        <div class="share-canvas-pic"></div>
+      </div>
+      <div class="gallery-con">
+        <h1>gallery</h1>
+        <img onclick="onSelectImg(this)" src="img/1.jpg" />
+        <img onclick="onSelectImg(this)" src="img/2.jpg" />
+        <img onclick="onSelectImg(this)" src="img/3.jpg" />
+      </div>
+    </div>
+
     <script src="js/main.js"></script>
-</body>
+  </body>
 </html>

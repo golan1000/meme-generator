@@ -1,0 +1,22 @@
+* {
+    box-sizing:border-box;
+
+}
+
+body {
+    background-color:cornflowerblue;
+}
+
+.menu {
+    border:3px solid green;
+}
+
+.gallery-con {
+    border:1px solid black;
+}
+
+#my-canvas {
+    outline:3px solid purple;
+    border:3px solid purple;
+  }
+  
