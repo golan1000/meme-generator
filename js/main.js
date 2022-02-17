@@ -77,7 +77,7 @@ function onAddText() {
   var txt = elTxtbox.value;
 
   var size = 20;
-  var family = "Impact"
+  var family = "Impact";
 
   var canvasXCenter = gElCanvas.width / 2;
 
@@ -95,19 +95,13 @@ function onAddText() {
   var alignedTextXStart = canvasXCenter - centerOfText;
 
   // drawText(alignedTextXStart, gElCanvas.height / 2, txt);
-  var x = alignedTextXStart
-  var y = gElCanvas.height / 2
-  addLine(txt,size,"center",family,"black","black",x,y)
-  renderMeme(gMeme)
+  var x = alignedTextXStart;
+  var y = gElCanvas.height / 2;
+  addLine(txt, size, "center", family, "black", "black", x, y);
+  renderMeme(gMeme);
 }
 
 
-function onDeleteLine() {
-  if (gMeme.selectedLineIdx === -1) return;
-  var deleted = gMeme.lines.splice(gMeme.selectedLineIdx,1)
-  console.log("deleted=",deleted)
-  renderMeme(gMeme)
-}
 function addLine(
   txt,
   size = 16,
@@ -169,178 +163,148 @@ function fastBtn() {
 function renderMeme(meme = gMeme) {
   loadImgById(gMeme.selectedImgId, meme);
 }
-function renderMemeDetails(meme) {
-  var txtPos;
-  if (!meme) return;
-  var canvasXCenter;
-  var canvasYCenter;
 
-  var x;
-  var y;
+
+//return a text line obj if the user clicked on one
+function textClicked(pos) {
   var line;
-  var txtSize;
-  var centerOfText;
-  var txt;
-  var size;
-  var ctxTextMetrics;
-  var alignedTextXStart;
-  var paintColor;
-  var borderColor;
-  var family;
-  for (var i = 0; i < meme.lines.length; i++) {
-    line = meme.lines[i];
-    console.log(line);
-    txt = line.txt;
-    size = line.size;
-    txtPos = line.align;
-    paintColor = line.paintColor;
-    borderColor = line.borderColor;
-    family = line.family;
+  var sizeList;
+  var txtPos;
+  for (var i = 0; i < gMeme.lines.length; i++) {
+    line = gMeme.lines[i];
+    txtPos = getTextLineSizeList(line);
+    // console.log(line)
 
-    canvasXCenter = gElCanvas.width / 2;
+    if (!txtPos) return
+    if (pos.x > txtPos.startX && pos.x < txtPos.endX) {
+      if (pos.y < txtPos.startY && pos.y > txtPos.endY) {
+        console.log("clicked the selected!");
 
-    canvasYCenter = gElCanvas.height / 2;
+        var foundObj = {
+          line:line,
+          id:i
+        };
+        return foundObj
+      }
+    }
+  }
+    return null;
+  }
+  //return obj with size of width height etc
+  function getTextLineSizeList(line = gMeme.lines[gMeme.selectedLineIdx]) {
+    // if (gMeme.selectedLineIdx === -1) return;
 
-    gCtx.font = `${size}px ${family}`;
-    ctxTextMetrics = gCtx.measureText(txt);
+    //current line in the meme's lines
+    // var line = gMeme.lines[gMeme.selectedLineIdx];
 
-    txtSize =
+    //center of the canvas x
+    var canvasXCenter = gElCanvas.width / 2;
+
+    //center of the canvas y
+    var canvasYCenter = gElCanvas.height / 2;
+
+    //measure the text how many pixels by size and font family
+    gCtx.font = `${line.size}px ${line.family}`;
+    var ctxTextMetrics = gCtx.measureText(line.txt);
+
+    //text size from right to left
+    var txtSize =
       Math.abs(ctxTextMetrics.actualBoundingBoxLeft) +
       Math.abs(ctxTextMetrics.actualBoundingBoxRight);
 
-    centerOfText = txtSize / 2;
+    //center of the text width
+    var centerOfText = txtSize / 2;
 
-    alignedTextXStart = canvasXCenter - centerOfText;
+    var startX = line.x;
+    var startY = line.y;
 
-    // if (txtPos === "up") {
-    //   x = alignedTextXStart;
-    //   y = 30
-    //   if (line.selectedLineIdx === i) {
-    //     drawRectEmpty(x - 5, y - 5,txtSize, 40)
-    //   }
-    //   drawText(x, y, txt, size, paintColor, borderColor);
-    // }
+    var endX = line.x + txtSize;
+    var endY = line.y - line.size;
 
-    if (line.customPos === false) {
-      console.log("customPos= false i=", i);
-      if (txtPos === "center") {
-        x = alignedTextXStart;
-        y = line.y;
+    //start x for text to be in the center of the canvas x
+    var alignedTextXStart = canvasXCenter - centerOfText;
 
-        gMeme.lines[i].x = x;
-        gMeme.lines[i].y = y;
-      }
-      if (txtPos === "left") {
-        x = 10;
-        y = line.y;
+    var textLineSizeList = {
+      canvasXCenter,
+      canvasYCenter,
+      ctxTextMetrics,
+      txtSize,
+      centerOfText,
+      alignedTextXStart,
+      startX,
+      startY,
+      endX,
+      endY
+    };
 
-        gMeme.lines[i].x = x;
-        gMeme.lines[i].y = y;
-      }
-      if (txtPos === "right") {
-        x = gElCanvas.width - txtSize - 15;
-        y = line.y;
-
-        gMeme.lines[i].x = x;
-        gMeme.lines[i].y = y;
-      }
-    } else {
-      x = line.x;
-      y = line.y;
-    }
-    // if (txtPos === "center") {
-    //   x = alignedTextXStart;
-    //   y = gElCanvas.height / 2
-    //   if (line.selectedLineIdx === i) {
-    //     drawRectEmpty(x - 5, y - 5,txtSize, 40)
-    //   }
-    //   drawText(
-    //     x,
-    //     y,
-    //     txt,
-    //     size,
-    //     paintColor,
-    //     borderColor
-    //   );
-    // }
-    // if (txtPos === "down") {
-    //   x = alignedTextXStart;
-    //   y = gElCanvas.height - 30
-
-    //   if (line.selectedLineIdx === i) {
-    //     drawRectEmpty(alignedTextXStart - 5, y + 5,txtSize, 40)
-    //   }
-    //   drawText(
-    //     x,
-    //     y,
-    //     txt,
-    //     size,
-    //     paintColor,
-    //     borderColor
-    //   );
-    // }
-    drawText(x, y, txt, family, size, paintColor, borderColor);
-    if (meme.selectedLineIdx === i) {
-      console.log("foundddd---------------------");
-
-      drawRectEmpty(x - 5, y + 10, txtSize + 15, -(size + 15));
-    }
-    // meme.lines[i].x = x;
-    // meme.lines[i].y = x;
+    return textLineSizeList;
   }
 
-  // loadImgFromDataUrl(gCurrImgDataUrl, 0, 0);
-}
 
-function loadImgById(id, meme) {
-  var foundImgIdx = gImgsDB.findIndex((img) => {
-    return img.id === id;
-  });
+  function init() {
+    console.log("app is ready");
 
-  if (foundImgIdx === -1) {
-    return null;
+    gElCanvas = document.querySelector("#my-canvas");
+    gCtx = gElCanvas.getContext("2d");
+
+    addCanvasListeners();
+    clearCanvas();
+    window.addEventListener("resize", resizeCanvas);
+    gCurrAddPos = "up";
+
+    renderMeme(gMeme);
   }
-  // console.log({foundImgIdx});
 
-  var foundImg = gImgsDB[foundImgIdx];
+  function addCanvasListeners() {
+    //mouse events
+    gElCanvas.addEventListener("mousemove", onMove);
+    gElCanvas.addEventListener("mousedown", onDown);
+    gElCanvas.addEventListener("mouseup", onUp);
 
-  loadImgToCanvas(foundImg.src, 0, 0, meme);
-}
-function init() {
-  console.log("app is ready");
+    //touch events
+    gElCanvas.addEventListener("touchmove", onMove);
+    gElCanvas.addEventListener("touchstart", onDown);
+    gElCanvas.addEventListener("touchend", onUp);
+  }
 
-  gElCanvas = document.querySelector("#my-canvas");
-  gCtx = gElCanvas.getContext("2d");
+  function onMove(ev) {
+    // console.log("mouse move")
+    if (!gDrag) return;
 
-  addCanvasListeners();
-  clearCanvas();
-  window.addEventListener("resize", resizeCanvas);
-  gCurrAddPos = "up";
+    const pos = getEventPosition(ev);
 
-  renderMeme(gMeme);
-}
+    gMeme.lines[gMeme.selectedLineIdx].customPos = true;
+    gMeme.lines[gMeme.selectedLineIdx].x = pos.x;
+    gMeme.lines[gMeme.selectedLineIdx].y = pos.y;
 
-function addCanvasListeners() {
-  //mouse events
-  gElCanvas.addEventListener("mousemove", onMove);
-  gElCanvas.addEventListener("mousedown", onDown);
-  gElCanvas.addEventListener("mouseup", onUp);
+    renderMeme(gMeme);
+    // console.log(ev)
+    // console.log(pos)
+  }
+  function onDown(ev) {
+    // console.log("mouse down");
+    const pos = getEventPosition(ev);
 
-  //touch events
-  gElCanvas.addEventListener("touchmove", onMove);
-  gElCanvas.addEventListener("touchstart", onDown);
-  gElCanvas.addEventListener("touchend", onUp);
-}
 
-function onMove(ev) {
-  // console.log("mouse move")
-  const pos = getEventPosition(ev);
-  // console.log(ev)
-  // console.log(pos)
-}
-function onDown(ev) {
-  // console.log("mouse down");
-  const pos = getEventPosition(ev);
+    console.log("on mouse down")
+
+    // console.log("txtPos startX", txtPos.startX);
+    // console.log("txtPos endX", txtPos.endX);
+    // console.log("txtPos startY", txtPos.startY);
+    // console.log("txtPos endY", txtPos.endY);
+
+    // console.log("pos.x", pos.x);
+    // console.log("pos.y", pos.y);
+
+    var foundLineObj = textClicked(pos);
+
+    if (foundLineObj === null) return;
+
+    console.log(foundLineObj.line);
+    console.log(foundLineObj);
+    gMeme.selectedLineIdx = foundLineObj.id;
+    gDrag = true;
+    renderMeme(gMeme);
   // console.log(ev);
   // console.log(pos);
 }
@@ -363,6 +327,8 @@ function getTextSizePos(meme) {
   };
 }
 function onUp(ev) {
+  if (!gDrag) return;
+  gDrag = false;
   // console.log("mouse up")
   const pos = getEventPosition(ev);
   // console.log(ev)
@@ -627,4 +593,147 @@ function onChangeTxtSize(num) {
   gMeme.lines[gMeme.selectedLineIdx].size += parseInt(num);
   console.log("text size=", gMeme.lines[gMeme.selectedLineIdx].size);
   renderMeme(gMeme);
+}
+function loadImgById(id, meme) {
+  var foundImgIdx = gImgsDB.findIndex((img) => {
+    return img.id === id;
+  });
+
+  if (foundImgIdx === -1) {
+    return null;
+  }
+  // console.log({foundImgIdx});
+
+  var foundImg = gImgsDB[foundImgIdx];
+
+  loadImgToCanvas(foundImg.src, 0, 0, meme);
+}
+function onDeleteLine() {
+  if (gMeme.selectedLineIdx === -1) return;
+  var deleted = gMeme.lines.splice(gMeme.selectedLineIdx, 1);
+  console.log("deleted=", deleted);
+  renderMeme(gMeme);
+}
+
+function renderMemeDetails(meme) {
+  var txtPos;
+  if (!meme) return;
+  var canvasXCenter;
+  var canvasYCenter;
+
+  var x;
+  var y;
+  var line;
+  var txtSize;
+  var centerOfText;
+  var txt;
+  var size;
+  var ctxTextMetrics;
+  var alignedTextXStart;
+  var paintColor;
+  var borderColor;
+  var family;
+  for (var i = 0; i < meme.lines.length; i++) {
+    line = meme.lines[i];
+    // console.log(line);
+    txt = line.txt;
+    size = line.size;
+    txtPos = line.align;
+    paintColor = line.paintColor;
+    borderColor = line.borderColor;
+    family = line.family;
+
+    canvasXCenter = gElCanvas.width / 2;
+
+    canvasYCenter = gElCanvas.height / 2;
+
+    gCtx.font = `${size}px ${family}`;
+    ctxTextMetrics = gCtx.measureText(txt);
+
+    txtSize =
+      Math.abs(ctxTextMetrics.actualBoundingBoxLeft) +
+      Math.abs(ctxTextMetrics.actualBoundingBoxRight);
+
+    centerOfText = txtSize / 2;
+
+    alignedTextXStart = canvasXCenter - centerOfText;
+
+    // if (txtPos === "up") {
+    //   x = alignedTextXStart;
+    //   y = 30
+    //   if (line.selectedLineIdx === i) {
+    //     drawRectEmpty(x - 5, y - 5,txtSize, 40)
+    //   }
+    //   drawText(x, y, txt, size, paintColor, borderColor);
+    // }
+
+    if (line.customPos === false) {
+      // console.log("customPos= false i=", i);
+      if (txtPos === "center") {
+        x = alignedTextXStart;
+        y = line.y;
+
+        gMeme.lines[i].x = x;
+        gMeme.lines[i].y = y;
+      }
+      if (txtPos === "left") {
+        x = 10;
+        y = line.y;
+
+        gMeme.lines[i].x = x;
+        gMeme.lines[i].y = y;
+      }
+      if (txtPos === "right") {
+        x = gElCanvas.width - txtSize - 15;
+        y = line.y;
+
+        gMeme.lines[i].x = x;
+        gMeme.lines[i].y = y;
+      }
+    } else {
+      x = line.x;
+      y = line.y;
+    }
+    // if (txtPos === "center") {
+    //   x = alignedTextXStart;
+    //   y = gElCanvas.height / 2
+    //   if (line.selectedLineIdx === i) {
+    //     drawRectEmpty(x - 5, y - 5,txtSize, 40)
+    //   }
+    //   drawText(
+    //     x,
+    //     y,
+    //     txt,
+    //     size,
+    //     paintColor,
+    //     borderColor
+    //   );
+    // }
+    // if (txtPos === "down") {
+    //   x = alignedTextXStart;
+    //   y = gElCanvas.height - 30
+
+    //   if (line.selectedLineIdx === i) {
+    //     drawRectEmpty(alignedTextXStart - 5, y + 5,txtSize, 40)
+    //   }
+    //   drawText(
+    //     x,
+    //     y,
+    //     txt,
+    //     size,
+    //     paintColor,
+    //     borderColor
+    //   );
+    // }
+    drawText(x, y, txt, family, size, paintColor, borderColor);
+    if (meme.selectedLineIdx === i) {
+      // console.log("foundddd---------------------");
+
+      drawRectEmpty(x - 5, y + 10, txtSize + 15, -(size + 15));
+    }
+    // meme.lines[i].x = x;
+    // meme.lines[i].y = x;
+  }
+
+  // loadImgFromDataUrl(gCurrImgDataUrl, 0, 0);
 }
