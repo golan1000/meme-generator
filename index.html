@@ -39,11 +39,18 @@
         <button type="button" class="">about</button>
         <button type="button" class="" onClick="onChangeTxtSize(1)">A++</button>
         <button type="button" class=""  onClick="onChangeTxtSize(-1)">A--</button>
+        <button type="button" class="" onClick="onTextChangePosX('1')">Text Right</button>
+        <button type="button" class=""  onClick="onTextChangePosX(-1)">Text Left</button>
+        <button type="button" class="" onClick="onTextChangePosY(1)">Text Down</button>
+        <button type="button" class=""  onClick="onTextChangePosY(-1)">Text Up</button>
+        <button type="button" class=""  onClick="onChangeSelectedLine()">Change Line</button>
         <a href="#" onClick="downloadCanvasImg(this)">Download</a>
       </div>
+      <div class="top-canvas-container">
       <div class="canvas-container">
         <canvas id="my-canvas" height="400" width="400"></canvas>
       </div>
+    </div>
       <div class="share">
         <div class="system-messages"></div>
         <div class="share-canvas-pic"></div>

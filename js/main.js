@@ -6,7 +6,8 @@ var gCtx;
 var gTxtSize = 16;
 var gCurrImgDataUrl = null;
 var gCurrPos = "up";
-var gCurrLine = 0;
+var gSelectedLineIdx = 0;
+var gDrag = false;
 var gImgsDB = [
   {
     id: 1,
@@ -24,6 +25,8 @@ var gImgsDB = [
     keywords: ["baby", "yes", "no"]
   }
 ];
+
+var gTouchEvs = ["touchstart", "touchmove", "touchend"];
 var gPaintColor = "black";
 var gBorderColor = "black";
 var gMeme = {
@@ -36,8 +39,8 @@ var gMeme = {
       align: "left",
       paintColor: "red",
       borderColor: "black",
-      x: 0,
-      y: 0,
+      x: 50,
+      y: 50,
       pos: "up"
     },
     {
@@ -105,9 +108,20 @@ function initgMeme() {
   };
 }
 function fastBtn() {
-  // renderMeme();
+  var size = 50;
+  var txt = "blablabla";
+  gCtx.font = `${size}px serif`;
+  var ctxTextMetrics = gCtx.measureText(txt);
+
+  drawText(20, 20, txt, size);
+  // txtSize =
+  //   Math.abs(ctxTextMetrics.actualBoundingBoxLeft) +
+  //   Math.abs(ctxTextMetrics.actualBoundingBoxRight);
+  var pos = {
+    xTop: Math.abs(ctxTextMetrics.actualBoundingBoxLeft)
+  };
 }
-function renderMeme(meme=gMeme) {
+function renderMeme(meme = gMeme) {
   loadImgById(gMeme.selectedImgId, meme);
 }
 function renderMemeDetails(meme) {
@@ -116,7 +130,9 @@ function renderMemeDetails(meme) {
   var canvasXCenter;
   var canvasYCenter;
 
-  var currLine;
+  var x;
+  var y;
+  var line;
   var txtSize;
   var centerOfText;
   var txt;
@@ -127,13 +143,13 @@ function renderMemeDetails(meme) {
   var borderColor;
 
   for (var i = 0; i < meme.lines.length; i++) {
-    currLine = meme.lines[i];
-    console.log(currLine);
-    txt = currLine.txt;
-    size = currLine.size;
-    txtPos = currLine.pos;
-    paintColor = currLine.paintColor
-    borderColor = currLine.borderColor
+    line = meme.lines[i];
+    console.log(line);
+    txt = line.txt;
+    size = line.size;
+    txtPos = line.pos;
+    paintColor = line.paintColor;
+    borderColor = line.borderColor;
 
     canvasXCenter = gElCanvas.width / 2;
 
@@ -141,33 +157,71 @@ function renderMemeDetails(meme) {
 
     // console.log("canvasXCenter=",canvasXCenter)
 
-    gCtx.font = `${size}px serif`;
+    gCtx.font = `${size}px Impact`;
     ctxTextMetrics = gCtx.measureText(txt);
+    // console.log("text width=",gCtx.measureText(txt).width)
+    // console.log({size})
+    // console.log({ctxTextMetrics})
     txtSize =
       Math.abs(ctxTextMetrics.actualBoundingBoxLeft) +
       Math.abs(ctxTextMetrics.actualBoundingBoxRight);
 
-    centerOfText = txtSize / 2;
+    //   console.log({txtSize})
+    // centerOfText = txtSize / 2;
 
     // console.log(centerOfText);
 
     // console.log({currTxt})
-    console.log("center text=", canvasXCenter - centerOfText);
+    // console.log("center text=", canvasXCenter - centerOfText);
     alignedTextXStart = canvasXCenter - centerOfText;
 
-    if (txtPos === "up") {
-      drawText(alignedTextXStart, 30, txt, size, paintColor, borderColor);
-      continue
-    }
-    if (txtPos === "center") {
-      drawText(alignedTextXStart, gElCanvas.height/2, txt, size, paintColor, borderColor);
-      continue
-    }
-    if (txtPos === "down") {
-      drawText(alignedTextXStart, gElCanvas.height-30, txt, size, paintColor, borderColor);
-      continue
-    }
+    // if (txtPos === "up") {
+    //   x = alignedTextXStart;
+    //   y = 30
+    //   if (line.selectedLineIdx === i) {
+    //     drawRectEmpty(x - 5, y - 5,txtSize, 40)
+    //   }
+    //   drawText(x, y, txt, size, paintColor, borderColor);
+    // }
+    // if (txtPos === "center") {
+    //   x = alignedTextXStart;
+    //   y = gElCanvas.height / 2
+    //   if (line.selectedLineIdx === i) {
+    //     drawRectEmpty(x - 5, y - 5,txtSize, 40)
+    //   }
+    //   drawText(
+    //     x,
+    //     y,
+    //     txt,
+    //     size,
+    //     paintColor,
+    //     borderColor
+    //   );
+    // }
+    // if (txtPos === "down") {
+    //   x = alignedTextXStart;
+    //   y = gElCanvas.height - 30
 
+    //   if (line.selectedLineIdx === i) {
+    //     drawRectEmpty(alignedTextXStart - 5, y + 5,txtSize, 40)
+    //   }
+    //   drawText(
+    //     x,
+    //     y,
+    //     txt,
+    //     size,
+    //     paintColor,
+    //     borderColor
+    //   );
+    // }
+    drawText(line.x, line.y, txt, size, paintColor, borderColor);
+    if (meme.selectedLineIdx === i) {
+      console.log("foundddd---------------------")
+      console.log(txtSize)
+      drawRectEmpty(line.x - 10 , line.y + 10, txtSize + 20, -(size + 15));
+    }
+    // meme.lines[i].x = x;
+    // meme.lines[i].y = x;
   }
 
   // loadImgFromDataUrl(gCurrImgDataUrl, 0, 0);
@@ -217,9 +271,58 @@ function addCanvasListeners() {
   gElCanvas.addEventListener("touchend", onUp);
 }
 
-function onMove() {}
-function onDown() {}
-function onUp() {}
+function onMove(ev) {
+  // console.log("mouse move")
+  const pos = getEventPosition(ev);
+  // console.log(ev)
+  // console.log(pos)
+}
+function onDown(ev) {
+  // console.log("mouse down");
+  const pos = getEventPosition(ev);
+  // console.log(ev);
+  // console.log(pos);
+}
+
+//return pos element like this
+// pos = {
+//   xTop: 0,
+//   yTop: 0,
+//   xBottom: 60,
+//   yBottom: 60,
+// }
+function getTextSizePos(meme) {
+  gCtx.font = `${size}px serif`;
+  var ctxTextMetrics = gCtx.measureText(txt);
+  // txtSize =
+  //   Math.abs(ctxTextMetrics.actualBoundingBoxLeft) +
+  //   Math.abs(ctxTextMetrics.actualBoundingBoxRight);
+  var pos = {
+    xTop: Math.abs(ctxTextMetrics.actualBoundingBoxLeft)
+  };
+}
+function onUp(ev) {
+  // console.log("mouse up")
+  const pos = getEventPosition(ev);
+  // console.log(ev)
+  // console.log(pos)
+}
+
+function getEventPosition(ev) {
+  var pos = {
+    x: ev.offsetX,
+    y: ev.offsetY
+  };
+  if (gTouchEvs.includes(ev.type)) {
+    ev.preventDefault();
+    ev.changedToTouches[0];
+    pos = {
+      x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
+      y: ev.pageY - ev.target.offsetTop - ev.target.clientTop
+    };
+  }
+  return pos;
+}
 
 function doUploadImg(imgDataUrl, onSuccess) {
   const formData = new FormData();
@@ -295,6 +398,21 @@ function loadImgFromDataUrl(dataUrl, x = 0, y = 0) {
 
   //   console.log("bla100");
 }
+function drawRect(x, y, lenX, lenY) {
+  gCtx.beginPath();
+  gCtx.rect(x, y, lenX, lenY);
+  gCtx.fillStyle = gPaintColor;
+  gCtx.fillRect(x, y, lenX, lenY);
+  gCtx.strokeStyle = gBorderColor;
+  gCtx.stroke();
+}
+
+function drawRectEmpty(x, y, lenX, lenY) {
+  gCtx.beginPath();
+  gCtx.rect(x, y, lenX, lenY);
+  gCtx.strokeStyle = "black";
+  gCtx.stroke();
+}
 
 //for img elements
 function loadElImg(elImg, x = 0, y = 0) {
@@ -334,11 +452,9 @@ function resizeCanvas() {
 //   loadElImg(elImg);
 // }
 
-
 function onSelectImg(id) {
-
   gMeme.selectedImgId = id;
-  renderMeme(gMeme)
+  renderMeme(gMeme);
 }
 
 function onChangePaintColor(ev) {
@@ -377,10 +493,20 @@ function drawText(
   gCtx.strokeStyle = borderColor;
   gCtx.lineWidth = 1;
   gCtx.lineCap = "square";
-  gCtx.font = `${fontSize}px serif`;
+  gCtx.font = `${fontSize}px Impact`;
   // console.log(gCtx);
   gCtx.fillText(text, x, y);
   gCtx.strokeText(text, x, y);
+
+  // var ctxTextMetrics = gCtx.measureText(text);
+  // console.log("text width=============",gCtx.measureText(text).width)
+  // console.log({fontSize})
+  // console.log({ctxTextMetrics})
+  // var txtSize =
+  //   Math.abs(ctxTextMetrics.actualBoundingBoxLeft) +
+  //   Math.abs(ctxTextMetrics.actualBoundingBoxRight);
+  //   console.log({txtSize})
+
 }
 
 function onSelectPos(elSelect) {
@@ -388,4 +514,23 @@ function onSelectPos(elSelect) {
   console.log(pos);
   gCurrPos = pos;
   gMeme.pos = pos;
+}
+
+function onTextChangePosX(pos) {
+  gMeme.lines[gSelectedLineIdx].x += parseInt(pos);
+  renderMeme(gMeme);
+}
+function onTextChangePosY(pos) {
+  gMeme.lines[gSelectedLineIdx].y += parseInt(pos);
+  renderMeme(gMeme);
+}
+
+function onChangeSelectedLine() {
+  if (gMeme.selectedLineIdx >= 2) {
+    gMeme.selectedLineIdx = 0;
+  } else {
+    gMeme.selectedLineIdx += 1;
+  }
+
+  renderMeme(gMeme);
 }
