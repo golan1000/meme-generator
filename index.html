@@ -12,10 +12,47 @@
 
     <div class="app">
       <div class="menu">
-        <button onclick="fastBtn()">Fast button</button>
-        <button onclick="onAddText()">Add Text</button>
+        <button class="menu-button" onclick="fastBtn()">Fast button</button>
+        <button class="menu-button" type="button" class="" onclick="onClearCanvas()">clear</button>
+
+        <button class="menu-button" type="button" class="" onclick="uploadImg()">Upload</button>
+
+
+        <button class="menu-button" type="button" class="">about</button>
+        <button class="menu-button" type="button" class="" onClick="onChangeTxtSize(1)">A++</button>
+        <button class="menu-button" type="button" class="" onClick="onChangeTxtSize(-1)">
+          A--
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onTextChangePosX(1)">
+          Text Right
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onTextChangePosX(-1)">
+          Text Left
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onTextChangePosY(1)">
+          Text Down
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onTextChangePosY(-1)">
+          Text Up
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onChangeSelectedLine()">
+          Change Line
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onAlign('left')">
+          AL
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onAlign('center')">
+          AC
+        </button>
+        <button class="menu-button" type="button" class="" onClick="onAlign('right')">
+          AR
+        </button>
+
+        <button class="menu-button" type="button" class="" onClick="onDeleteLine()">
+          Delete Line
+        </button>
+        <button class="menu-button" onclick="onAddText()">Add Text</button>
         <input id="meme-text" type="text" value="testtttt" />
-        <button type="button" class="" onclick="onClearCanvas()">clear</button>
         <span class="">inside color:</span>
         <input
           type="color"
@@ -28,8 +65,7 @@
           name="borderColor"
           oninput="onChangeBorderColor(event)"
         />
-        <button type="button" class="" onclick="uploadImg()">Upload</button>
-
+        <span class="">font family:</span>
         <select name="ffamily" id="ffamily" onchange="onSelectFontFamily(this)">
           <option value="Impact">Impact</option>
           <option value="Futura">Futura</option>
@@ -38,40 +74,7 @@
           <option value="Arial">Arial</option>
           <option value="Verdana">Verdana</option>
         </select>
-
-        <button type="button" class="">about</button>
-        <button type="button" class="" onClick="onChangeTxtSize(1)">A++</button>
-        <button type="button" class="" onClick="onChangeTxtSize(-1)">
-          A--
-        </button>
-        <button type="button" class="" onClick="onTextChangePosX(1)">
-          Text Right
-        </button>
-        <button type="button" class="" onClick="onTextChangePosX(-1)">
-          Text Left
-        </button>
-        <button type="button" class="" onClick="onTextChangePosY(1)">
-          Text Down
-        </button>
-        <button type="button" class="" onClick="onTextChangePosY(-1)">
-          Text Up
-        </button>
-        <button type="button" class="" onClick="onChangeSelectedLine()">
-          Change Line
-        </button>
-        <button type="button" class="" onClick="onAlign('left')">
-          Align Left
-        </button>
-        <button type="button" class="" onClick="onAlign('right')">
-          Align Right
-        </button>
-        <button type="button" class="" onClick="onAlign('center')">
-          Center Text
-        </button>
-        <button type="button" class="" onClick="onDeleteLine()">
-          Delete Line
-        </button>
-        <a href="#" onClick="downloadCanvasImg(this)">Download</a>
+        <a href="#" onClick="onDownloadCanvas(this)">Download</a>
       </div>
       <div class="top-canvas-container">
         <div class="canvas-container">
@@ -87,7 +90,6 @@
         <img onclick="onSelectImg(1)" src="img/1.jpg" />
         <img onclick="onSelectImg(2)" src="img/2.jpg" />
         <img onclick="onSelectImg(3)" src="img/3.jpg" />
-        <img onclick="onSelectImg(4)" src="img/test1.jpg" />
       </div>
     </div>
 
