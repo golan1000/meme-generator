@@ -12,46 +12,123 @@
 
     <div class="app">
       <div class="menu">
-        <button class="menu-button" onclick="fastBtn()">Fast button</button>
-        <button class="menu-button" type="button" class="" onclick="onClearCanvas()">clear</button>
-
-        <button class="menu-button" type="button" class="" onclick="uploadImg()">Upload</button>
-
-
-        <button class="menu-button" type="button" class="">about</button>
-        <button class="menu-button" type="button" class="" onClick="onChangeTxtSize(1)">A++</button>
-        <button class="menu-button" type="button" class="" onClick="onChangeTxtSize(-1)">
-          A--
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onTextChangePosX(1)">
-          Text Right
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onTextChangePosX(-1)">
-          Text Left
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onTextChangePosY(1)">
-          Text Down
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onTextChangePosY(-1)">
-          Text Up
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onChangeSelectedLine()">
-          Change Line
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onAlign('left')">
-          AL
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onAlign('center')">
-          AC
-        </button>
-        <button class="menu-button" type="button" class="" onClick="onAlign('right')">
-          AR
+        <button
+        alt="clear all" 
+          class="menu-button"
+          type="button"
+          class=""
+          onclick="onClearCanvas()"
+        >
+          <img class="menu-icon" src="/img/icons/clear-all.png" />
         </button>
 
-        <button class="menu-button" type="button" class="" onClick="onDeleteLine()">
-          Delete Line
+        <button
+          class="menu-button"
+          type="button"
+          onclick="uploadImg()"
+          alt="upload image"
+        >
+        <img class="menu-icon" src="/img/icons/upload-image.png" />
         </button>
-        <button class="menu-button" onclick="onAddText()">Add Text</button>
+
+        <button class="menu-button" type="button" onclick="onClickAbout()">
+          <img  alt="upload image" class="menu-icon" src="/img/icons/about.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onChangeTxtSize(1)"
+        >
+          <img  alt="text font increase" class="menu-icon" src="/img/icons/increase font - icon.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onChangeTxtSize(-1)"
+        >
+        <img  alt="text font decrease" class="menu-icon" src="/img/icons/decrease font - icon.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onTextChangePosX(1)"
+        >
+          <img  alt="move text right" class="menu-icon" src="/img/icons/arrow-right.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onTextChangePosX(-1)"
+        >
+          <img  alt="move text left" class="menu-icon" src="/img/icons/arrow-left.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onTextChangePosY(1)"
+        >
+          <img  alt="move text down" class="menu-icon" src="/img/icons/arrow-down.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onTextChangePosY(-1)"
+        >
+          <img  alt="move text up" class="menu-icon" src="/img/icons/arrow-up.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onChangeSelectedLine()"
+        >
+          <img  alt="change line" class="menu-icon" src="/img/icons/up-and-down-opposite-double-arrows-side-by-side.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onAlign('left')"
+        >
+          <img  alt="align left" class="menu-icon" src="/img/icons/align-to-left.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onAlign('center')"
+        >
+        <img  alt="align text to center" class="menu-icon" src="/img/icons/center-text-alignment.png" />
+        </button>
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onAlign('right')"
+        >
+        <img  alt="align right" class="menu-icon" src="/img/icons/align-to-right.png" />
+        </button>
+
+        <button
+          class="menu-button"
+          type="button"
+          class=""
+          onClick="onDeleteLine()"
+        >
+          <img  alt="delete line" class="menu-icon" src="/img/icons/trash.png" />
+        </button>
+        <button class="menu-button" onclick="onAddText()">
+          <img class="menu-icon" src="/img/icons/add.png" />
+        </button>
+        <button class="menu-button" onclick="onShareImage()">
+          <img class="menu-icon" src="/img/icons/facebook-logo.png" />
+        </button>
         <input id="meme-text" type="text" value="testtttt" />
         <span class="">inside color:</span>
         <input
