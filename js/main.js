@@ -8,6 +8,7 @@ var gCurrImgDataUrl = null;
 var gCurrAddPos = "up";
 var gSelectedLineIdx = 0;
 var gDrag = false;
+var gKeywordSearchCountMap = [];
 var gImgsDB = [
   {
     id: 1,
@@ -37,7 +38,7 @@ var gImgsDB = [
   {
     id: 6,
     src: "img/6.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "baba", "no"]
   },
   {
     id: 7,
@@ -98,7 +99,7 @@ var gImgsDB = [
     id: 18,
     src: "img/18.jpg",
     keywords: ["baby", "yes", "no"]
-  },
+  }
 ];
 
 var gCleanDownloadVersion = null;
@@ -203,23 +204,6 @@ function addLine(
     line.customPos = true;
   }
   gMeme.selectedLineIdx = gMeme.lines.push(line) - 1;
-}
-function initgMeme() {
-  var gMeme = {
-    selectedImgId: 1,
-    selectedLineIdx: -1,
-    lines: [
-      {
-        txt: "",
-        size: 16,
-        align: null,
-        color: black,
-        x: 0,
-        y: 0,
-        pos: null
-      }
-    ]
-  };
 }
 function fastBtn() {
   var size = 50;
@@ -326,7 +310,8 @@ function init() {
   gCurrAddPos = "up";
 
   renderMeme(gMeme);
-  renderGallery()
+  renderGallery();
+  onSwitchToGallery();
 }
 
 function addCanvasListeners() {
@@ -342,44 +327,44 @@ function addCanvasListeners() {
 }
 
 function onMove(ev) {
+  // ev.preventDefault();
   // console.log("mouse move")
-  if (!gDrag) return;
-
   const pos = getEventPosition(ev);
+  if (gDrag) {
+    gMeme.lines[gMeme.selectedLineIdx].customPos = true;
+    gMeme.lines[gMeme.selectedLineIdx].x = pos.x;
+    gMeme.lines[gMeme.selectedLineIdx].y = pos.y;
+    gElCanvas.parentElement.classList.add("grabbable");
+    renderMeme(gMeme);
+    return;
+  }
+  if (!gDrag) {
+    var foundLineObj = textClicked(pos);
 
-  gMeme.lines[gMeme.selectedLineIdx].customPos = true;
-  gMeme.lines[gMeme.selectedLineIdx].x = pos.x;
-  gMeme.lines[gMeme.selectedLineIdx].y = pos.y;
-
-  renderMeme(gMeme);
+    if (foundLineObj === null) {
+      gElCanvas.parentElement.style.cursor = "default";
+    } else {
+      gElCanvas.parentElement.style.cursor = "grab";
+    }
+  }
   // console.log(ev)
   // console.log(pos)
 }
 function onDown(ev) {
+  ev.preventDefault();
   // console.log("mouse down");
   const pos = getEventPosition(ev);
 
-  console.log("on mouse down");
-
-  // console.log("txtPos startX", txtPos.startX);
-  // console.log("txtPos endX", txtPos.endX);
-  // console.log("txtPos startY", txtPos.startY);
-  // console.log("txtPos endY", txtPos.endY);
-
-  // console.log("pos.x", pos.x);
-  // console.log("pos.y", pos.y);
+  // console.log("on mouse down");
 
   var foundLineObj = textClicked(pos);
 
   if (foundLineObj === null) return;
 
-  console.log(foundLineObj.line);
-  console.log(foundLineObj);
   gMeme.selectedLineIdx = foundLineObj.id;
   gDrag = true;
   renderMeme(gMeme);
-  // console.log(ev);
-  // console.log(pos);
+  gElCanvas.parentElement.classList.add("grabbable");
 }
 
 //return pos element like this
@@ -402,10 +387,10 @@ function getTextSizePos(meme) {
 function onUp(ev) {
   if (!gDrag) return;
   gDrag = false;
+
   // console.log("mouse up")
+  gElCanvas.parentElement.classList.remove("grabbable");
   const pos = getEventPosition(ev);
-  // console.log(ev)
-  // console.log(pos)
 }
 
 function getEventPosition(ev) {
@@ -483,6 +468,14 @@ function loadImgToCanvas(imgPath, x = 0, y = 0, meme) {
   var img = new Image();
 
   img.onload = () => {
+    console.log("img height width", img.height, img.width);
+
+    // //adjust canvas to img size
+    // if (gElCanvas.width > img.width) gElCanvas.width = img.width
+    // if (gElCanvas.height > img.height) gElCanvas.height = img.height
+
+    // var elMenu = document.querySelector(".menu").height = gElCanvas.height
+
     gCtx.drawImage(img, 0, 0);
     renderMemeDetails(meme);
   };
@@ -536,29 +529,28 @@ function catchCanvas() {
   gCurrImgDataUrl = gElCanvas.toDataURL("image/jpeg");
 }
 function resizeCanvas() {
-  var elCanvasCon = document.querySelector(".canvas-container");
+  // var elCanvasCon = document.querySelector(".canvas-container");
 
-  // catchCanvas();
-  // clearCanvas();
+  // // catchCanvas();
+  // // clearCanvas();
 
-  if (window.innerWidth < 400) {
-  gElCanvas.width = document.querySelector(".canvas-container").offsetWidth;
-  console.log("to 100% w")
-  } else {
-    gElCanvas.width = '400'
-    console.log("to 400 w")
-  }
-  if (window.innerHeight < 400) {
-    console.log("to 100% h")
-    gElCanvas.height = document.querySelector(".canvas-container").offsetHeight
-  } else {
-    gElCanvas.height = '400'
-    console.log("to 400 h")
-  }
+  // if (window.innerWidth < 400) {
+  // gElCanvas.width = document.querySelector(".canvas-container").offsetWidth;
+  // console.log("to 100% w")
+  // } else {
+  //   gElCanvas.width = '400'
+  //   console.log("to 400 w")
+  // }
+  // if (window.innerHeight < 400) {
+  //   console.log("to 100% h")
+  //   gElCanvas.height = document.querySelector(".canvas-container").offsetHeight
+  // } else {
+  //   gElCanvas.height = '400'
+  //   console.log("to 400 h")
+  // }
   console.log("resize activated!!!");
   renderMeme(gMeme);
 }
-
 
 function onSelectImg(id) {
   gMeme.selectedImgId = id;
@@ -767,42 +759,116 @@ function renderMemeDetails(meme) {
 
     drawText(x, y, txt, family, size, paintColor, borderColor);
     gCleanDownloadVersion = gElCanvas.toDataURL();
-    
-    if (meme.selectedLineIdx === i) {
 
+    if (meme.selectedLineIdx === i) {
       drawRectEmpty(x - 5, y + 10, txtSize + 15, -(size + 15));
     }
   }
-
 }
 
-function saveCanvasWithoutMark(data) {
-  
+function saveCanvasWithoutMark(data) {}
+
+function renderGallery(imgsHTMLStr = createGalleryHTML(gImgsDB)) {
+  var elGalleryCon = document.querySelector(".gallery-layout");
+
+  elGalleryCon.innerHTML = imgsHTMLStr;
 }
+function createGalleryHTML(imgsDB = gImgsDB) {
+  var strHTMLItems = imgsDB.map((img) => {
+    // console.log({img})
+    var str = `<img class="galleryImg" id="${img.id}" onclick="onSelectImg(${img.id})" src="img/${img.id}.jpg"/>`;
+    return str;
+  });
 
-function renderGallery() {
-
-  var galleryImgsHTML = createGalleryHTML()
-
-  console.log(galleryImgsHTML)
-  var elGalleryCon = document.querySelector(".gallery-con")
-
-  elGalleryCon.innerHTML = galleryImgsHTML;
-}
-function createGalleryHTML() {
-
-  var imgId = 1
-  var strHTMLItems = gImgsDB.map((img) => {
-    
-    var str = `<img class="galleryImg" id="${imgId}" onclick="onSelectImg(${imgId})" src="img/${imgId}.jpg"/>`
-    console.log(str)
-    imgId++;
-    return str
-  })
-
-  console.log({strHTMLItems})
-var strHTML = strHTMLItems.join(" ")
+  var strHTML = strHTMLItems.join(" ");
 
   return strHTML;
 }
+
+function onSwitchToGallery() {
+  var elMemeEdit = document.querySelector(".meme-edit-con");
+
+  elMemeEdit.style.display = "none";
+
+  var elGallery = document.querySelector(".gallery-layout-con");
+
+  elGallery.style.display = "block";
+}
+
+function onSwitchToMeme() {
+  var elMemeEdit = document.querySelector(".meme-edit-con");
+
+  elMemeEdit.style.display = "block";
+
+  var elGallery = document.querySelector(".gallery-layout-con");
+
+  elGallery.style.display = "none";
+}
+
+function onChangeSearchKeyword(elDatalist) {
+  console.log(elDatalist);
+  console.log(elDatalist.value);
+  var foundImgs = getPicturesByKeyword(elDatalist.value);
+  if (foundImgs.length !== 0) {
+    console.log(foundImgs);
+    var strHTML = createGalleryHTML(foundImgs);
+
+    renderGallery(strHTML);
+  }
+}
+
+//returns HTML
+function getPicturesByKeyword(keyword) {
+  var elements = gImgsDB.filter((img) => {
+    var words = img.keywords;
+    return words.includes(keyword);
+  });
+
+  return elements;
+}
+
+function updateKeywordMap() {
+  var img;
+  var keyword;
+  var listOfWords = [];
+  gKeywordSearchCountMap = {};
+  for (var i = 0; i < gImgsDB.length; i++) {
+    img = gImgsDB[i];
+    for (var j = 0; j < img.keywords.length; j++) {
+      keyword = img.keywords[j];
+      listOfWords.push(keyword);
+      if (!gKeywordSearchCountMap[keyword]) {
+        gKeywordSearchCountMap[keyword] = 1;
+      } else {
+        gKeywordSearchCountMap[keyword]++;
+      }
+    }
+  }
+  console.log({ listOfWords });
+  listOfWords = new Set(listOfWords);
+  console.log({ listOfWords });
+  console.log("listOfWords.length", listOfWords.size);
+  console.log({ gKeywordSearchCountMap });
+  for (var keyword of listOfWords) {
+    console.log("word = ", keyword, " occur=", gKeywordSearchCountMap[keyword]);
+  }
+}
+
+function findMaxWordOccur() {
+  var keyword;
+  var max = -Infinity;
+  var maxWord = null;
+  var currValue;
+  for (var i = 0; i < Object.keys(gKeywordSearchCountMap).length; i++) {
+    keyword = Object.keys(gKeywordSearchCountMap)[i];
+    currValue = gKeywordSearchCountMap[keyword];
+    console.log(currValue);
+    if (currValue > max) {
+      max = currValue;
+      maxWord = keyword;
+    }
+  }
+  return { max, maxWord}
+}
+
 

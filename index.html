@@ -4,172 +4,265 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/all-styles.css" />
     <title>Meme Generator</title>
   </head>
   <body onload="init()">
-    Meme Generator
-
-    <div class="app">
-      <div class="menu">
-        <button
-        alt="clear all" 
-          class="menu-button"
-          type="button"
-          class=""
-          onclick="onClearCanvas()"
-        >
-          <img class="menu-icon" src="/img/icons/clear-all.png" />
-        </button>
-
-        <button
-          class="menu-button"
-          type="button"
-          onclick="uploadImg()"
-          alt="upload image"
-        >
-        <img class="menu-icon" src="/img/icons/upload-image.png" />
-        </button>
-
-        <button class="menu-button" type="button" onclick="onClickAbout()">
-          <img  alt="upload image" class="menu-icon" src="/img/icons/about.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onChangeTxtSize(1)"
-        >
-          <img  alt="text font increase" class="menu-icon" src="/img/icons/increase font - icon.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onChangeTxtSize(-1)"
-        >
-        <img  alt="text font decrease" class="menu-icon" src="/img/icons/decrease font - icon.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onTextChangePosX(1)"
-        >
-          <img  alt="move text right" class="menu-icon" src="/img/icons/arrow-right.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onTextChangePosX(-1)"
-        >
-          <img  alt="move text left" class="menu-icon" src="/img/icons/arrow-left.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onTextChangePosY(1)"
-        >
-          <img  alt="move text down" class="menu-icon" src="/img/icons/arrow-down.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onTextChangePosY(-1)"
-        >
-          <img  alt="move text up" class="menu-icon" src="/img/icons/arrow-up.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onChangeSelectedLine()"
-        >
-          <img  alt="change line" class="menu-icon" src="/img/icons/up-and-down-opposite-double-arrows-side-by-side.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onAlign('left')"
-        >
-          <img  alt="align left" class="menu-icon" src="/img/icons/align-to-left.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onAlign('center')"
-        >
-        <img  alt="align text to center" class="menu-icon" src="/img/icons/center-text-alignment.png" />
-        </button>
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onAlign('right')"
-        >
-        <img  alt="align right" class="menu-icon" src="/img/icons/align-to-right.png" />
-        </button>
-
-        <button
-          class="menu-button"
-          type="button"
-          class=""
-          onClick="onDeleteLine()"
-        >
-          <img  alt="delete line" class="menu-icon" src="/img/icons/trash.png" />
-        </button>
-        <button class="menu-button" onclick="onAddText()">
-          <img class="menu-icon" src="/img/icons/add.png" />
-        </button>
-        <button class="menu-button" onclick="onShareImage()">
-          <img class="menu-icon" src="/img/icons/facebook-logo.png" />
-        </button>
-        <input id="meme-text" type="text" value="testtttt" />
-        <span class="">inside color:</span>
-        <input
-          type="color"
-          name="paintColor"
-          oninput="onChangePaintColor(event)"
-        />
-        <span class="">border color:</span>
-        <input
-          type="color"
-          name="borderColor"
-          oninput="onChangeBorderColor(event)"
-        />
-        <span class="">font family:</span>
-        <select name="ffamily" id="ffamily" onchange="onSelectFontFamily(this)">
-          <option value="Impact">Impact</option>
-          <option value="Futura">Futura</option>
-          <option value="Garamond">Garamond</option>
-          <option value="Times New Roman">Times New Roman</option>
-          <option value="Arial">Arial</option>
-          <option value="Verdana">Verdana</option>
-        </select>
-        <a href="#" onClick="onDownloadCanvas(this)">Download</a>
+    <header class="app-layout">
+      <div class="header-logo">
+        memegen
       </div>
-      <div class="top-canvas-container">
-        <div class="canvas-container">
-          <canvas id="my-canvas" height="400" width="400"></canvas>
+      <div class="header-menu-con">
+        <div class="header-menu-item" onclick="onSwitchToGallery()">Gallery</div>
+        <div class="header-menu-item" onclick="onSwitchToMeme()">Meme</div>
+        <div class="header-menu-item">About</button>
         </div>
       </div>
-      <div class="share">
-        <div class="system-messages"></div>
-        <div class="share-canvas-pic"></div>
-      </div>
-      <div class="gallery-con">
-        <h1>gallery</h1>
-        <img onclick="onSelectImg(1)" src="img/1.jpg" />
-        <img onclick="onSelectImg(2)" src="img/2.jpg" />
-        <img onclick="onSelectImg(3)" src="img/3.jpg" />
-      </div>
+    </header>
+    <main class="app-layout">
+
+    <div class="main-container">
+          <div class="meme-edit-con">
+            <div class="meme-edit">
+              <div class="canvas-container">
+                <canvas id="my-canvas" height="553px" width="539px"></canvas>
+              </div>
+
+              <div class="menu">
+                <!-- line 1 of menu -->
+                <div class="menu-line-first">
+                  <div class="menu-line-first-textbox">
+                    <input id="meme-text" type="text" value="testtttt" />
+                  </div>
+                  <button
+                  class="menu-button"
+                  type="button"
+                  class=""
+                  onClick="onChangeSelectedLine()"
+                >
+                  <img
+                    alt="change line"
+                    class="menu-icon"
+                    src="/img/icons/up-and-down-opposite-double-arrows-side-by-side.png"
+                  />
+                </button>
+                <button class="menu-button" onclick="onAddText()">
+                  <img class="menu-icon" src="/img/icons/add.png" />
+                </button>
+                <button
+                class="menu-button"
+                type="button"
+                class=""
+                onClick="onDeleteLine()"
+              >
+                <img alt="delete line" class="menu-icon" src="/img/icons/trash.png" />
+              </button>
+              <button
+              alt="clear all"
+              class="menu-button"
+              type="button"
+              class=""
+              onclick="onClearCanvas()"
+            >
+              <img class="menu-icon" src="/img/icons/clear-all.png" />
+            </button>
+                </div>
+                <!-- line 2 of menu -->
+                <div class="menu-line-second">
+                  <button
+                  class="menu-button"
+                  type="button"
+                  class=""
+                  onClick="onChangeTxtSize(1)"
+                >
+                  <img
+                    alt="text font increase"
+                    class="menu-icon"
+                    src="/img/icons/increase font - icon.png"
+                  />
+                </button>
+                <button
+                  class="menu-button"
+                  type="button"
+                  class=""
+                  onClick="onChangeTxtSize(-1)"
+                >
+                  <img
+                    alt="text font decrease"
+                    class="menu-icon"
+                    src="/img/icons/decrease font - icon.png"
+                  />
+                </button>
+                <button
+                  class="menu-button"
+                  type="button"
+                  class=""
+                  onClick="onAlign('left')"
+                >
+                  <img
+                    alt="align left"
+                    class="menu-icon"
+                    src="/img/icons/align-to-left.png"
+                  />
+                </button>
+                <button
+                  class="menu-button"
+                  type="button"
+                  class=""
+                  onClick="onAlign('center')"
+                >
+                  <img
+                    alt="align text to center"
+                    class="menu-icon"
+                    src="/img/icons/center-text-alignment.png"
+                  />
+                </button>
+                <button
+                  class="menu-button"
+                  type="button"
+                  class=""
+                  onClick="onAlign('right')"
+                >
+                  <img
+                    alt="align right"
+                    class="menu-icon"
+                    src="/img/icons/align-to-right.png"
+                  />
+                </button>
+                </div>
+                <!-- line 3 of menu -->
+                <div class="menu-line-third">
+                  <select alt="font family" name="ffamily" id="ffamily" onchange="onSelectFontFamily(this)">
+                    <option value="Impact">Impact</option>
+                    <option value="Futura">Futura</option>
+                    <option value="Garamond">Garamond</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                  </select>
+                  <input
+                    type="color"
+                    name="borderColor"
+                    oninput="onChangeBorderColor(event)"
+                  />
+                  <input
+                    type="color"
+                    name="paintColor"
+                    oninput="onChangePaintColor(event)"
+                  />
+                </div>
+                <!-- line 4 of menu -->
+                <div class="menu-line-forth">
+
+                <button
+                  class="menu-button"
+                  type="button"
+                  class=""
+                  onClick="onTextChangePosX(-1)"
+                >
+                  <img
+                    alt="move text left"
+                    class="menu-icon"
+                    src="/img/icons/arrow-left.png"
+                  />
+                </button>
+                <button
+                class="menu-button"
+                type="button"
+                class=""
+                onClick="onTextChangePosX(1)"
+              >
+                <img
+                  alt="move text right"
+                  class="menu-icon"
+                  src="/img/icons/arrow-right.png"
+                />
+              </button>
+                <button
+                class="menu-button"
+                type="button"
+                class=""
+                onClick="onTextChangePosY(-1)"
+              >
+                <img
+                  alt="move text up"
+                  class="menu-icon"
+                  src="/img/icons/arrow-up.png"
+                />
+              </button>
+              <button
+                class="menu-button"
+                type="button"
+                class=""
+                onClick="onTextChangePosY(1)"
+              >
+                <img
+                  alt="move text down"
+                  class="menu-icon"
+                  src="/img/icons/arrow-down.png"
+                />
+              </button>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="gallery-layout-con">
+          <div class="search-gallery">
+            <form action="" method="get">
+              <label for="keyword">choose keyword:</label>
+              <input list="keywords" name="keyword" id="keyword" onchange="onChangeSearchKeyword(this)">
+              <datalist id="keywords">
+                <option value="funny">
+                <option value="lol">
+                <option value="baba">
+                <option value="baby">
+                <option value="nice">
+              </datalist>
+              <input type="submit" hidden>
+            </form>
+          </div>
+          <div class="gallery-layout">
+            <h1>gallery</h1>
+            <img onclick="onSelectImg(1)" src="img/1.jpg" />
+            <img onclick="onSelectImg(2)" src="img/2.jpg" />
+            <img onclick="onSelectImg(3)" src="img/3.jpg" />
+          </div>
+          </div>
     </div>
 
+  </main>
+
+  <div class="share-dialog app-layout">
+    <button
+    class="menu-button"
+    type="button"
+    onclick="uploadImg()"
+    alt="upload image"
+  >
+    <img class="menu-icon" src="/img/icons/upload-image.png" />
+  </button>
+    <button class="menu-button" onclick="onShareImage()">
+      <img class="menu-icon" src="/img/icons/facebook-logo.png" />
+    </button>
+    <div class="share" >
+      <a href="#" onClick="onDownloadCanvas(this)">Download</a>
+      <div class="system-messages"></div>
+      <div class="share-canvas-pic"></div>
+    </div>
+  </div>
+
+    <footer class="app-layout">
+      <span class="footer-logo">memegen</span>
+      <span class="footer-logo-sub">all rights reserved 2019</span>
+    </footer>
     <script src="js/main.js"></script>
+    <!-- <script src="js/gallery/gallery-controller.js"></script>
+    <script src="js/gallery/gallery-service.js"></script>
+
+    <script src="js/meme/meme-controller.js"></script>
+    <script src="js/meme/meme-service.js"></script>
+
+    <script src="js/storage/storage-service.js"></script> -->
   </body>
 </html>

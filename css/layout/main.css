@@ -1,0 +1,18 @@
+.main-container {
+  width: 100%;
+  /* text-align: left; */
+  background-color: #e3e3e3;
+  height: 598px;
+  max-height:598px;
+  /* margin: 0 auto; */
+}
+
+.meme-edit {
+    height:100%;
+    display:flex;
+    justify-content: space-around;
+}
+
+.meme-edit-con {
+    display:none;
+}

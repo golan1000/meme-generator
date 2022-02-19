@@ -1,0 +1,30 @@
+.canvas-container {
+  text-align: center;
+  max-height:270.5px;
+  max-width:275.5px;
+  height:553px;
+  width:539px;  
+  background-color: aquamarine;
+  width: 80%;
+}
+
+#my-canvas {
+  /* outline: 3px solid purple;
+  border: 3px solid purple; */
+  background-color: greenyellow;
+
+}
+
+.grabbable {
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+
+.grabbable:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}

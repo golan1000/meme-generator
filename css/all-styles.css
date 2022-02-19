@@ -1,0 +1,14 @@
+/* all style css files */
+
+@import "layout/app.css";
+@import "layout/footer.css";
+@import "layout/header.css";
+@import "layout/main.css";
+
+/* @import 'styles.css'; */
+
+@import "basic/base.css";
+
+@import "components/canvas.css";
+@import "components/gallery.css";
+@import "components/menu.css";
