@@ -108,6 +108,7 @@ function getKeywordCloudHTML() {
   var fontSize;
   var maxFontSize = 90;
   var htmlElementsHTML = [];
+  var gMinFontSize = 16;
 
   for (var i = 0; i < Object.keys(gKeywordSearchCountMap).length; i++) {
     keyword = Object.keys(gKeywordSearchCountMap)[i];
@@ -117,7 +118,7 @@ function getKeywordCloudHTML() {
 
     sizeFromMax = (maxCount - diff) * 3;
 
-    fontSize = 20 + sizeFromMax;
+    fontSize = gMinFontSize + sizeFromMax;
 
     if (fontSize > maxFontSize) {
       fontSize = maxFontSize;
@@ -167,4 +168,23 @@ function updateKeywordMap() {
     }
   }
   return listOfWords;
+}
+
+//find which word has the biggest counter and return how much
+//(this is used to set the biggest object when we do word cloud)
+function findMaxWordOccur() {
+  updateKeywordMap();
+  var keyword;
+  var max = -Infinity;
+  var maxWord = null;
+  var currValue;
+  for (var i = 0; i < Object.keys(gKeywordSearchCountMap).length; i++) {
+    keyword = Object.keys(gKeywordSearchCountMap)[i];
+    currValue = gKeywordSearchCountMap[keyword];
+    if (currValue > max) {
+      max = currValue;
+      maxWord = keyword;
+    }
+  }
+  return { maxWord: maxWord, maxCount: max };
 }

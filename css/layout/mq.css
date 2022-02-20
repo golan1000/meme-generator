@@ -1,59 +1,64 @@
 /* media queries */
 
-
 @media (min-width: 100px) and (max-width: 300px) {
-
-    .menu {
-        max-width:95vw;
-    }
-    /* .menu-button {
+  .menu {
+    max-width: 95vw;
+  }
+  /* .menu-button {
         width:3.125rem;
         height:2.5rem;
     } */
-    .menu-button-con {
-        display: flex;
-    }
-    .header-menu-con {
-        display:none;
-    }
-    .meme-edit {
-        flex-direction:column;
-    }
+  .menu-button-con {
+    display: flex;
+  }
+  .header-menu-con {
+    display: none;
+  }
+  .meme-edit {
+    flex-direction: column;
+  }
+  .search-gallery {
+    display:flex;
+    justify-content: center;
+  }
 }
 @media (min-width: 300px) and (max-width: 650px) {
+  .menu-button {
+    width: 3.125rem;
+    height: 2.5rem;
+  }
 
-    .menu-button {
-          width:3.125rem;
-          height:2.5rem;
-      }
-
-    .menu-button-con {
-        display: flex;
-    }
-    .header-menu-con {
-        display:none;
-    }
-    .meme-edit {
-        flex-direction:column;
-    }
+  .menu-button-con {
+    display: flex;
+  }
+  .header-menu-con {
+    display: none;
+  }
+  .meme-edit {
+    flex-direction: column;
+  }
+  .search-gallery {
+    display:flex;
+    justify-content: center;
+  }
 }
 
-
 @media (min-width: 650px) and (max-width: 3000px) {
-
-    .menu-button {
-          width:50px;
-          height:40px;
-      }
-    .menu-button-con {
-        display: none;
-        
-    }
-    .header-menu-con {
-        display:flex;
-    }
-    .meme-edit {
-        flex-direction:row;
-    }
-
+  .menu-button {
+    width: 50px;
+    height: 40px;
+  }
+  .menu-button-con {
+    display: none;
+  }
+  .header-menu-con {
+    display: flex;
+  }
+  .meme-edit {
+    flex-direction: row;
+  }
+  .search-gallery {
+    display:flex;
+    justify-content: start;
+  }
 }

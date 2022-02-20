@@ -2,14 +2,11 @@
 var gElCanvas;
 var gCtx;
 var gDrag = false;
-// var gTxtSize = 16;
 var gCurrImgDataUrl = null;
 var gCurrAddPos = "up";
 var gImgTopX = null;
 var gImgTopY = null;
 var gTouchEvs = ["touchstart", "touchmove", "touchend"];
-// var gPaintColor = "white";
-// var gBorderColor = "black";
 
 //v
 function onDeleteLine() {

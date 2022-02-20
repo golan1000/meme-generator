@@ -15,22 +15,22 @@ var gMeme = {
       family: "Impact",
       paintColor: "red",
       borderColor: "black",
-      x: 50,
-      y: 50,
+      x: 87,
+      y: 86,
       pos: "up",
-      customPos: false
+      customPos: true
     },
     {
-      txt: "this is simple line",
-      size: 50,
+      txt: "With Thina",
+      size: 71,
       family: "Arial",
       align: "center",
-      paintColor: "red",
+      paintColor: "#0af512",
       borderColor: "black",
-      x: 60,
-      y: 80,
+      x: 82,
+      y: 433,
       pos: "center",
-      customPos: false
+      customPos: true
     },
     {
       txt: "tell me more",
@@ -39,10 +39,10 @@ var gMeme = {
       family: "Verdana",
       paintColor: "white",
       borderColor: "black",
-      x: 100,
-      y: 120,
+      x: 125,
+      y: 233,
       pos: "down",
-      customPos: false
+      customPos: true
     }
   ]
 };
