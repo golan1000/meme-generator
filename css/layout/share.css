@@ -1,0 +1,35 @@
+.share-box {
+    background-color: white;
+    width:300px;
+    height:200px;
+    position:fixed;
+    top:30%;
+    left:50%;
+    display: none;
+    margin-top: -100px;
+    margin-left: -150px;
+    border:3px solid black;
+}
+
+.share-box-button {
+    cursor:pointer;
+    box-shadow: 4px 4px 9px 2px rgba(0,0,0,0.75);
+    border:0;
+    font-size:24px;
+    border-radius: 10px;
+    background-color: #ff7f00;
+  }
+  .x-button {
+    font-size:24px;
+    border-radius: 10px;
+    background-color: #ff7f00;
+  }
+
+  .share-box-con {
+    display:flex;
+    width:95%;
+    height:95%;
+    flex-direction: column;
+    align-items:center;
+    justify-content: space-evenly;
+  }

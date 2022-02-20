@@ -4,18 +4,16 @@ footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid black;
   height:208px;
 }
 
 .footer-logo {
-  width: 66.5px;
-  height: 11px;
+  font-size:40px;
+  font-family:impact;
+  color:white;
 }
 .footer-logo-sub {
-  width: 66.5px;
-  height: 11px;
   font-family: Montserrat;
-  font-size: 9.5px;
+  font-size: 20px;
   color: #fff;
 }

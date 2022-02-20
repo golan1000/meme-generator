@@ -1,15 +1,45 @@
 .gallery-layout {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 0px;
+  width:100%;
+  margin: 0 auto;
   text-align: center;
 }
 .galleryImg {
-  width: 100px;
+  width: 10rem;
   height: auto;
+  cursor:pointer;
 }
-
+.keyword-cloud-item {
+  cursor:pointer;
+}
 .search-gallery {
-    border: 1px solid black;
+    /* width:100%;
+    border: 1px solid black; */
     padding: 0px;
     text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+.keyword-cloud-item {
+  margin: 5px;
+}
+.search-keyword-cloud {
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#keyword {
+  cursor:text;
+  height:40px;
+  border-radius: 10px;
+}
+.keyword-desc {
+  font-size:25px;
+  border-radius: 10px;
 }

@@ -11,12 +11,17 @@ header {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: aqua;
+  flex-shrink: 0;
+  /* background-color: aqua; */
 }
 
+.header-menu-con > * {
+  /* border:1px solid black; */
+}
 .header-menu-item {
+  cursor:pointer;
   font-size: 20px;
-  width:40px;
+  width:70px; 
   margin: 0 4.5px 0 0;
   font-family: Montserrat;
   text-align: center;
@@ -25,11 +30,43 @@ header {
 .about {
     border-left:1px solid gray;
 }
-
+.logo-title {
+  cursor:pointer;
+  font-size:40px;
+  font-family:impact;
+  color: #fff;
+}
 .header-logo {
-    font-size: 40px;
-    margin: 0 4.5px 0 0;
-    font-family: Montserrat;
     text-align: center;
-    color: #fff;
+
+}
+.menu-button-mobile > img {
+  width:1.8rem;
+  height:auto;
+}
+.menu-button-mobile {
+  cursor:pointer;
+  display:flex;
+}
+.menu-button-con {
+  display:none;
+}
+.header-section1,.header-section2 {
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+}
+
+.header-section1 {
+  justify-content: left;
+}
+.header-section2 {
+  justify-content: right;
+}
+
+.padding-section1 {
+  width:20px;
+}
+.padding-section2 {
+  width:20px;
 }

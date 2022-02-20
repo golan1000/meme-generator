@@ -1,17 +1,14 @@
 .canvas-container {
   text-align: center;
-  max-height:270.5px;
-  max-width:275.5px;
-  height:553px;
-  width:539px;  
-  background-color: aquamarine;
-  width: 80%;
+
+  /* background-color: black; */
+  display: inline-block;
 }
 
 #my-canvas {
   /* outline: 3px solid purple;
   border: 3px solid purple; */
-  background-color: greenyellow;
+  /* background-color: greenyellow; */
 
 }
 

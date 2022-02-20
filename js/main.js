@@ -9,21 +9,24 @@ var gCurrAddPos = "up";
 var gSelectedLineIdx = 0;
 var gDrag = false;
 var gKeywordSearchCountMap = [];
+var gDownloadMode = false;
+var gImgTopX = null;
+var gImgTopY = null;
 var gImgsDB = [
   {
     id: 1,
     src: "img/1.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["test1", "yes", "no"]
   },
   {
     id: 2,
     src: "img/2.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "yestest3", "no"]
   },
   {
     id: 3,
     src: "img/3.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "bad", "no"]
   },
   {
     id: 4,
@@ -33,7 +36,7 @@ var gImgsDB = [
   {
     id: 5,
     src: "img/5.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "funny", "no"]
   },
   {
     id: 6,
@@ -43,12 +46,12 @@ var gImgsDB = [
   {
     id: 7,
     src: "img/7.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "cold", "no"]
   },
   {
     id: 8,
     src: "img/8.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "yes", "hot"]
   },
   {
     id: 9,
@@ -58,12 +61,12 @@ var gImgsDB = [
   {
     id: 10,
     src: "img/10.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["crazy", "yes", "no"]
   },
   {
     id: 11,
     src: "img/11.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "ball", "no"]
   },
   {
     id: 12,
@@ -73,7 +76,7 @@ var gImgsDB = [
   {
     id: 13,
     src: "img/13.jpg",
-    keywords: ["baby", "yes", "no"]
+    keywords: ["baby", "red", "no"]
   },
   {
     id: 14,
@@ -103,6 +106,7 @@ var gImgsDB = [
 ];
 
 var gCleanDownloadVersion = null;
+var gUploadMode = false;
 var gTouchEvs = ["touchstart", "touchmove", "touchend"];
 var gPaintColor = "white";
 var gBorderColor = "black";
@@ -114,7 +118,7 @@ var gMeme = {
       txt: "I sometimes eat Falafel",
       size: 20,
       align: "left",
-      family: "impact",
+      family: "Impact",
       paintColor: "red",
       borderColor: "black",
       x: 50,
@@ -123,8 +127,9 @@ var gMeme = {
       customPos: false
     },
     {
-      txt: "testtttt",
+      txt: "this is simple line",
       size: 50,
+      family: "Arial",
       align: "center",
       paintColor: "red",
       borderColor: "black",
@@ -134,9 +139,10 @@ var gMeme = {
       customPos: false
     },
     {
-      txt: "the bottom line",
+      txt: "tell me more",
       size: 40,
       align: "right",
+      family: "Verdana",
       paintColor: "white",
       borderColor: "black",
       x: 100,
@@ -236,12 +242,12 @@ function textClicked(pos) {
     if (!txtPos) return;
     if (pos.x > txtPos.startX && pos.x < txtPos.endX) {
       if (pos.y < txtPos.startY && pos.y > txtPos.endY) {
-        console.log("clicked the selected!");
-
+        //the user clicked on area of text, he want to select it
         var foundObj = {
           line: line,
           id: i
         };
+
         return foundObj;
       }
     }
@@ -311,6 +317,7 @@ function init() {
 
   renderMeme(gMeme);
   renderGallery();
+  renderKeywordCloud();
   onSwitchToGallery();
 }
 
@@ -327,7 +334,7 @@ function addCanvasListeners() {
 }
 
 function onMove(ev) {
-  // ev.preventDefault();
+  ev.preventDefault();
   // console.log("mouse move")
   const pos = getEventPosition(ev);
   if (gDrag) {
@@ -361,7 +368,19 @@ function onDown(ev) {
 
   if (foundLineObj === null) return;
 
+  //update selected line
   gMeme.selectedLineIdx = foundLineObj.id;
+
+  //update the meme input textbox
+  console.log({ foundLineObj });
+
+  var elTextbox = document.querySelector("#meme-text");
+  elTextbox.value = foundLineObj.line.txt;
+
+  console.log({ foundLineObj });
+  var elFontFamily = document.querySelector("#ffamily");
+  elFontFamily.value = foundLineObj.line.family;
+
   gDrag = true;
   renderMeme(gMeme);
   gElCanvas.parentElement.classList.add("grabbable");
@@ -447,13 +466,6 @@ function uploadImg() {
 
   doUploadImg(imgDataUrl, onSuccess);
 }
-function onDownloadCanvas(elLink) {
-  gMeme.selectedLineIdx = -1;
-  renderMeme(gMeme);
-  const data = gElCanvas.toDataURL();
-  elLink.href = data;
-  elLink.download = "canvas-output.jpg";
-}
 
 function clearCanvas() {
   gCtx.beginPath();
@@ -464,17 +476,74 @@ function clearCanvas() {
   gCtx.stroke();
 }
 
+function resizeCanvas() {
+  var newCanvasSize = getNewCanvasSize();
+  // console.log({ newCanvasSize });
+  changeToGoodView()
+  renderMeme();
+}
+function changeToGoodView() {
+  var newCanvasSize = getNewCanvasSize()
+
+  if (window.innerWidth < 650) {
+    
+    document.querySelector(".menu-button-con").style.display = 'flex';
+    document.querySelector(".header-menu-con").style.display = 'none';
+
+    console.log("changed flex column!!!!");
+    document.querySelector(".meme-edit").style.flexDirection = "column";
+    gElCanvas.width = newCanvasSize.x;
+    gElCanvas.height = newCanvasSize.y;
+  }
+  if (window.innerWidth > 650) {
+    document.querySelector(".menu-button-con").style.display = 'none';
+    document.querySelector(".header-menu-con").style.display = 'flex';
+    console.log("changed flex back!!!!");
+    document.querySelector(".meme-edit").style.flexDirection = "row";
+    gElCanvas.width = newCanvasSize.x;
+    gElCanvas.height = newCanvasSize.y;
+
+  }
+}
+function getNewCanvasSize() {
+  var x;
+  var y;
+  var pos = getCanvasContainerSize();
+
+  if (window.innerWidth < 900) {
+    x = window.innerWidth - 100;
+    y = x;
+  } else {
+    
+    x = 500;
+    y = x;
+  }
+
+  if (gImgTopX) {
+    if (gImgTopX < x) {
+      x = gImgTopX;
+      y = x;
+    }
+  }
+
+  var newSize = { x: x, y: y };
+  console.log({ newSize });
+  return newSize;
+}
+//current load
 function loadImgToCanvas(imgPath, x = 0, y = 0, meme) {
   var img = new Image();
 
   img.onload = () => {
-    console.log("img height width", img.height, img.width);
+    console.log("loadddddddd2");
 
-    // //adjust canvas to img size
-    // if (gElCanvas.width > img.width) gElCanvas.width = img.width
-    // if (gElCanvas.height > img.height) gElCanvas.height = img.height
+    gImgTopX = img.width;
+    gImgTopY = img.height;
 
-    // var elMenu = document.querySelector(".menu").height = gElCanvas.height
+    var newCanvasSize = getNewCanvasSize();
+    console.log({ newCanvasSize });
+    gElCanvas.width = newCanvasSize.x;
+    gElCanvas.height = newCanvasSize.y;
 
     gCtx.drawImage(img, 0, 0);
     renderMemeDetails(meme);
@@ -486,13 +555,16 @@ function loadImgFromDataUrl(dataUrl, x = 0, y = 0) {
   var img = new Image();
 
   img.onload = () => {
-    gCtx.drawImage(img, x, y);
-    // console.log("bla200")
+    console.log("loadddddddd1");
+    gCtx.drawImage(img, 0, 0);
+
+    console.log("bla200");
   };
   img.src = dataUrl;
 
   //   console.log("bla100");
 }
+
 function drawRect(x, y, lenX, lenY) {
   gCtx.beginPath();
   gCtx.rect(x, y, lenX, lenY);
@@ -520,6 +592,7 @@ function loadElImg(elImg, x = 0, y = 0) {
   var elImgHeight = elImg.height;
 
   gElCanvas.width = elImg.width;
+  console.log("gElCanvas 99 width", gElCanvas.width);
   gElCanvas.height = elImg.height;
   gCtx.drawImage(elImg, x, y);
   catchCanvas();
@@ -528,28 +601,23 @@ function loadElImg(elImg, x = 0, y = 0) {
 function catchCanvas() {
   gCurrImgDataUrl = gElCanvas.toDataURL("image/jpeg");
 }
-function resizeCanvas() {
-  // var elCanvasCon = document.querySelector(".canvas-container");
 
-  // // catchCanvas();
-  // // clearCanvas();
+function getCurrImgSize() {}
 
-  // if (window.innerWidth < 400) {
-  // gElCanvas.width = document.querySelector(".canvas-container").offsetWidth;
-  // console.log("to 100% w")
-  // } else {
-  //   gElCanvas.width = '400'
-  //   console.log("to 400 w")
-  // }
-  // if (window.innerHeight < 400) {
-  //   console.log("to 100% h")
-  //   gElCanvas.height = document.querySelector(".canvas-container").offsetHeight
-  // } else {
-  //   gElCanvas.height = '400'
-  //   console.log("to 400 h")
-  // }
-  console.log("resize activated!!!");
-  renderMeme(gMeme);
+function getCanvasContainerSize() {
+  var elCanvasCon = gElCanvas.parentElement;
+  console.log(gElCanvas.parentElement);
+
+  if (elCanvasCon.offsetWidth === 0) {
+    var elCanvasCon = document.querySelector(".meme-edit");
+    console.log("there is a zero!");
+  }
+  console.log(elCanvasCon);
+  var pos = {
+    x: elCanvasCon.offsetWidth,
+    y: elCanvasCon.offsetHeight
+  };
+  return pos;
 }
 
 function onSelectImg(id) {
@@ -563,8 +631,14 @@ function onChangePaintColor(ev) {
     '[name="paintColor"]'
   ).value;
   console.log(elColorSelectorValue);
-
   gPaintColor = elColorSelectorValue;
+
+    //update if there is current selected line
+    if (gMeme.selectedLineIdx !== -1) {
+      gMeme.lines[gMeme.selectedLineIdx].paintColor = elColorSelectorValue;
+      renderMeme(gMeme);
+    }
+    
 }
 
 function onChangeBorderColor(ev) {
@@ -572,9 +646,15 @@ function onChangeBorderColor(ev) {
   const elColorSelectorValue = document.querySelector(
     '[name="borderColor"]'
   ).value;
+  gBorderColor = elColorSelectorValue;
   console.log(elColorSelectorValue);
 
-  gBorderColor = elColorSelectorValue;
+  //update if there is current selected line
+  if (gMeme.selectedLineIdx !== -1) {
+    gMeme.lines[gMeme.selectedLineIdx].borderColor = elColorSelectorValue;
+    renderMeme(gMeme);
+  }
+  
 }
 
 function onClearCanvas() {
@@ -730,7 +810,25 @@ function renderMemeDetails(meme) {
 
     alignedTextXStart = canvasXCenter - centerOfText;
 
-    if (line.customPos === false) {
+    //first line center up
+    if (i === 0 && line.customPos === false) {
+      // console.log("first line=", line);
+      x = alignedTextXStart;
+      y = 20 + size;
+
+      gMeme.lines[i].x = x;
+      gMeme.lines[i].y = y;
+    }
+    //second line center down
+    if (i === 1 && line.customPos === false) {
+      // console.log("second line=", line);
+      x = alignedTextXStart;
+      y = gElCanvas.height - 20 - size;
+
+      gMeme.lines[i].x = x;
+      gMeme.lines[i].y = y;
+    }
+    if (line.customPos === false && i > 1) {
       if (txtPos === "center") {
         x = alignedTextXStart;
         y = line.y;
@@ -758,25 +856,52 @@ function renderMemeDetails(meme) {
     }
 
     drawText(x, y, txt, family, size, paintColor, borderColor);
-    gCleanDownloadVersion = gElCanvas.toDataURL();
 
     if (meme.selectedLineIdx === i) {
-      drawRectEmpty(x - 5, y + 10, txtSize + 15, -(size + 15));
+      //if download mode, draw "selection" on line after 5 secs, else, do it now
+      if (gDownloadMode === true || gUploadMode === true) {
+        setTimeout(function () {
+          drawRectEmpty(x - 5, y + 10, txtSize + 15, -(size + 15));
+          gDownloadMode = false;
+          gUploadMode = false;
+        }, 5000);
+      } else {
+        drawRectEmpty(x - 5, y + 10, txtSize + 15, -(size + 15));
+      }
     }
+  }
+
+  //download if download mode is on
+  if (gDownloadMode === true) {
+    gCleanDownloadVersion = gElCanvas.toDataURL();
+
+    var tempLink = document.createElement("a");
+    tempLink.title = "my title text";
+    tempLink.href = gCleanDownloadVersion;
+    tempLink.classList.add("temp-link");
+    tempLink.download = "canvas-output.jpg";
+    tempLink.click();
+
+    gDownloadMode = false;
+  }
+  //upload if upload mode is on
+  if (gUploadMode === true) {
+    uploadImg();
+    gUploadMode = true;
   }
 }
 
 function saveCanvasWithoutMark(data) {}
 
-function renderGallery(imgsHTMLStr = createGalleryHTML(gImgsDB)) {
+function renderGallery(imgsHTMLStr = createGalleryHTML()) {
   var elGalleryCon = document.querySelector(".gallery-layout");
 
   elGalleryCon.innerHTML = imgsHTMLStr;
 }
 function createGalleryHTML(imgsDB = gImgsDB) {
   var strHTMLItems = imgsDB.map((img) => {
-    // console.log({img})
     var str = `<img class="galleryImg" id="${img.id}" onclick="onSelectImg(${img.id})" src="img/${img.id}.jpg"/>`;
+
     return str;
   });
 
@@ -786,42 +911,69 @@ function createGalleryHTML(imgsDB = gImgsDB) {
 }
 
 function onSwitchToGallery() {
-  var elMemeEdit = document.querySelector(".meme-edit-con");
+  var elMemeTab = document.querySelector(".meme-edit-con");
 
-  elMemeEdit.style.display = "none";
+  elMemeTab.style.display = "none";
 
-  var elGallery = document.querySelector(".gallery-layout-con");
+  var elGalleryTab = document.querySelector(".gallery-layout-con");
 
-  elGallery.style.display = "block";
+  elGalleryTab.style.display = "block";
+
+  var elAboutTab = document.querySelector(".about-con");
+
+  elAboutTab.style.display = "none";
 }
 
 function onSwitchToMeme() {
-  var elMemeEdit = document.querySelector(".meme-edit-con");
+  var elMemeTab = document.querySelector(".meme-edit-con");
 
-  elMemeEdit.style.display = "block";
+  elMemeTab.style.display = "block";
 
-  var elGallery = document.querySelector(".gallery-layout-con");
+  var elGalleryTab = document.querySelector(".gallery-layout-con");
 
-  elGallery.style.display = "none";
+  elGalleryTab.style.display = "none";
+
+  var elAboutTab = document.querySelector(".about-con");
+
+  elAboutTab.style.display = "none";
 }
 
-function onChangeSearchKeyword(elDatalist) {
-  console.log(elDatalist);
-  console.log(elDatalist.value);
-  var foundImgs = getPicturesByKeyword(elDatalist.value);
-  if (foundImgs.length !== 0) {
-    console.log(foundImgs);
-    var strHTML = createGalleryHTML(foundImgs);
+function onSwitchToAbout() {
+  var elMemeTab = document.querySelector(".meme-edit-con");
 
-    renderGallery(strHTML);
-  }
+  elMemeTab.style.display = "none";
+
+  var elGalleryTab = document.querySelector(".gallery-layout-con");
+
+  elGalleryTab.style.display = "none";
+
+  var elAboutTab = document.querySelector(".about-con");
+
+  elAboutTab.style.display = "block";
+}
+function onChangeSearchKeyword(elDatalist) {
+  console.log(elDatalist.value);
+
+  var foundImgs = getPicturesByKeyword(elDatalist.value);
+
+  console.log("found images to render!");
+  var strHTML = createGalleryHTML(foundImgs);
+  console.log({ strHTML });
+
+  renderGallery(strHTML);
 }
 
 //returns HTML
 function getPicturesByKeyword(keyword) {
+  console.log("check word", keyword);
   var elements = gImgsDB.filter((img) => {
     var words = img.keywords;
-    return words.includes(keyword);
+    var wordsStr = words.join(" ");
+    // console.log({wordsStr})
+    var result = wordsStr.indexOf(keyword);
+    // console.log({result})
+    // console.log("result !== -1",result !== -1)
+    return result !== -1;
   });
 
   return elements;
@@ -844,17 +996,24 @@ function updateKeywordMap() {
       }
     }
   }
-  console.log({ listOfWords });
+  console.log(listOfWords);
+  console.log("bla");
   listOfWords = new Set(listOfWords);
-  console.log({ listOfWords });
-  console.log("listOfWords.length", listOfWords.size);
-  console.log({ gKeywordSearchCountMap });
-  for (var keyword of listOfWords) {
-    console.log("word = ", keyword, " occur=", gKeywordSearchCountMap[keyword]);
+  //to regular array
+  listOfWords = Array.from(listOfWords);
+
+  var elOptions = document.querySelector(".cloud-options");
+  var options = "";
+  for (var i = 0; i < listOfWords.length; i++) {
+    keyword = listOfWords[i];
+    options += `<option value="${keyword}"></option>`;
   }
+
+  elOptions.innerHTML = options;
 }
 
 function findMaxWordOccur() {
+  updateKeywordMap();
   var keyword;
   var max = -Infinity;
   var maxWord = null;
@@ -862,13 +1021,166 @@ function findMaxWordOccur() {
   for (var i = 0; i < Object.keys(gKeywordSearchCountMap).length; i++) {
     keyword = Object.keys(gKeywordSearchCountMap)[i];
     currValue = gKeywordSearchCountMap[keyword];
-    console.log(currValue);
     if (currValue > max) {
       max = currValue;
       maxWord = keyword;
     }
   }
-  return { max, maxWord}
+  return { maxWord: maxWord, maxCount: max };
 }
 
+function getKeywordCloudHTML() {
+  var max = findMaxWordOccur();
 
+  var maxWord = max.maxWord;
+
+  var maxCount = max.maxCount;
+
+  var currValue;
+  var keyword;
+  var diff;
+  var sizeFromMax;
+  var fontSize;
+  var maxFontSize = 90;
+  var htmlElementsHTML = [];
+
+  for (var i = 0; i < Object.keys(gKeywordSearchCountMap).length; i++) {
+    keyword = Object.keys(gKeywordSearchCountMap)[i];
+    currValue = gKeywordSearchCountMap[keyword];
+
+    diff = maxCount - currValue;
+
+    sizeFromMax = (maxCount - diff) * 3;
+
+    fontSize = 20 + sizeFromMax;
+
+    if (fontSize > maxFontSize) {
+      fontSize = maxFontSize;
+    }
+
+    htmlElementsHTML += `<span class="keyword-cloud-item" style='font-size:${fontSize}px;' onclick="onClickCloudKeyword('${keyword}')">${keyword}</span>`;
+  }
+
+  return htmlElementsHTML;
+}
+
+function renderKeywordCloud() {
+  var elKeywordCloud = document.querySelector(".search-keyword-cloud");
+
+  elKeywordCloud.innerHTML = getKeywordCloudHTML();
+}
+
+function onClickCloudKeyword(keyword) {
+  var foundImgs = getPicturesByKeyword(keyword);
+  if (foundImgs.length !== 0) {
+    console.log(foundImgs);
+    var strHTML = createGalleryHTML(foundImgs);
+
+    renderGallery(strHTML);
+  }
+}
+
+function onTextInput(elTextbox) {
+  var inputText = elTextbox.value;
+  var selectedLine = gMeme.selectedLineIdx;
+  console.log("blaaaa");
+  if (selectedLine === -1) {
+    console.log("none!!!");
+  } else {
+    console.log("old line=", gMeme.lines[selectedLine].txt);
+    gMeme.lines[selectedLine].txt = inputText;
+    console.log("inputText=", gMeme.lines[selectedLine].txt);
+    renderMeme(gMeme);
+  }
+}
+
+function setInputAsSelectedLine(text) {
+  var elTextbox = document.querySelector("#meme-text");
+
+  elTextbox.value = text;
+}
+function onDownloadCanvas() {
+  gMeme.selectedLineIdx = -1;
+
+  // elLink.href = data;
+  // elLink.download = "canvas-output.jpg";
+
+  gDownloadMode = true;
+
+  //render again without "selection" of a line
+
+  renderMeme(gMeme);
+
+  // document.body.appendChild(a);
+}
+
+function onUploadCanvas() {
+  gMeme.selectedLineIdx = -1;
+  gUploadMode = true;
+  renderMeme(gMeme);
+}
+
+function uploadImg() {
+  var gElCanvas = document.querySelector("#my-canvas");
+  const imgDataUrl = gElCanvas.toDataURL("image/jpeg");
+
+  // A function to be called if request succeeds
+  function onSuccess(uploadedImgUrl) {
+    const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl);
+    console.log(encodedUploadedImgUrl);
+    var uploadedLinkStr = `Your photo is available here: ${uploadedImgUrl}`;
+    renderUploadedLink(uploadedLinkStr);
+
+    var shareFBHTML = `
+        <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">
+           <button class="share-box-button">Share</button>   
+        </a>`;
+    renderShareFB(shareFBHTML);
+  }
+  doUploadImg(imgDataUrl, onSuccess);
+}
+
+function gotoUrl(url) {}
+function doUploadImg(imgDataUrl, onSuccess) {
+  const formData = new FormData();
+  formData.append("img", imgDataUrl);
+
+  fetch("//ca-upload.com/here/upload.php", {
+    method: "POST",
+    body: formData
+  })
+    .then((res) => res.text())
+    .then((url) => {
+      console.log("Got back live url:", url);
+      onSuccess(url);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+
+function renderShareFB(strHTML) {
+  var elFBshare = document.querySelector(".share-fb-con");
+
+  elFBshare.innerHTML = strHTML;
+}
+function renderUploadedLink(str) {
+  var elUploadedLink = document.querySelector(".messages");
+
+  elUploadedLink.innerText = str;
+}
+
+function onCloseShareDialog() {
+  document.querySelector(".share-box").style.display = "none";
+}
+function onOpenShareDialog() {
+  document.querySelector(".share-box").style.display = "block";
+}
+
+function onClickMobileMenu() {
+  document.querySelector(".mobile-menu-con").style.display = "block";
+}
+
+function onCloseMobileMenu() {
+  document.querySelector(".mobile-menu-con").style.display = "none";
+}

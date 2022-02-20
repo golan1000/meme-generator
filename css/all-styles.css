@@ -4,6 +4,8 @@
 @import "layout/footer.css";
 @import "layout/header.css";
 @import "layout/main.css";
+@import "layout/share.css";
+@import "layout/about.css";
 
 /* @import 'styles.css'; */
 
@@ -12,3 +14,4 @@
 @import "components/canvas.css";
 @import "components/gallery.css";
 @import "components/menu.css";
+@import "components/mobile-menu.css";
