@@ -7,24 +7,18 @@ function onOpenShareDialog() {
   document.querySelector(".share-box").style.display = "block";
 }
 function onUploadCanvas() {
-  gMeme.selectedLineIdx = -1;
+  setMemeProperty("selectedLineIdx",-1)
   gUploadMode = true;
-  renderMeme(gMeme);
+  renderMeme();
 }
 
 function onDownloadCanvas() {
-  gMeme.selectedLineIdx = -1;
-
-  // elLink.href = data;
-  // elLink.download = "canvas-output.jpg";
+  setMemeProperty("selectedLineIdx",-1)
 
   gDownloadMode = true;
 
   //render again without "selection" of a line
-
-  renderMeme(gMeme);
-
-  // document.body.appendChild(a);
+  renderMeme();
 }
 
 //v

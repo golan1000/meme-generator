@@ -2,8 +2,7 @@
 //v
 function uploadImg() {
   gUploadMode = true;
-  var gElCanvas = document.querySelector("#my-canvas");
-  const imgDataUrl = gElCanvas.toDataURL("image/jpeg");
+  const imgDataUrl = getCanvasData()
 
   // A function to be called if request succeeds
   function onSuccess(uploadedImgUrl) {

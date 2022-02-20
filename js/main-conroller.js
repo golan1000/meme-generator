@@ -18,6 +18,18 @@ function getTextSizePos(meme) {
   };
 }
 
+function initGelCanvas() {
+  gElCanvas = document.querySelector("#my-canvas");
+}
+function getCanvas() {
+  return gElCanvas;
+}
+
+function getCanvasData() {
+  const imgDataUrl = gElCanvas.toDataURL("image/jpeg");
+  return imgDataUrl;
+}
+
 function addCanvasListeners() {
   //mouse events
   gElCanvas.addEventListener("mousemove", onMove);
@@ -28,7 +40,6 @@ function addCanvasListeners() {
   gElCanvas.addEventListener("touchmove", onMove);
   gElCanvas.addEventListener("touchstart", onDown);
   gElCanvas.addEventListener("touchend", onUp);
-
 }
 
 function onClickMobileMenu() {

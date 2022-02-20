@@ -136,6 +136,7 @@ function getTextLineSizeList(line = gMeme.lines[gMeme.selectedLineIdx]) {
   var alignedTextXStart = canvasXCenter - centerOfText;
 
   var textLineSizeList = {
+    text: line.txt,
     canvasXCenter,
     canvasYCenter,
     ctxTextMetrics,
@@ -173,12 +174,19 @@ function changeTxtSize(num) {
   renderMeme();
 }
 
-
-function setMemeLineProperty(lineNum,property,value) {
-    gMeme.lines[lineNum][property] = value;
+function setMemeLineProperty(lineNum, property, value) {
+  gMeme.lines[lineNum][property] = value;
 }
 
-function getMemeLinePropery(lineNum,property) {
-    return gMeme.lines[lineNum][property]
+function getMemeLineProperty(lineNum, property) {
+  return gMeme.lines[lineNum][property];
 }
-
+function getMemeProperty(property) {
+  return gMeme[property];
+}
+function setMemeProperty(property,value) {
+  gMeme[property] = value;
+}
+function getMeme() {
+  return gMeme;
+}

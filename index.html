@@ -261,7 +261,9 @@
           <div class="gallery-layout-con">
             <div class="search-gallery">
               <form action="" method="get">
-                <span class="keyword-desc" for="keyword">choose keyword:</span>
+                <span class="keyword-desc" for="keyword"
+                  >choose / enter keyword:</span
+                >
                 <input
                   list="keywords"
                   name="keyword"
@@ -273,7 +275,13 @@
                 <input type="submit" hidden />
               </form>
             </div>
-            <div class="search-keyword-cloud"></div>
+            <div class="search-keyword-cloud-con">
+
+              <div class="search-keyword-cloud"></div>
+            <div class="search-wordcloud-desc">
+              <span class="">or Choose a word from the "Word Cloud" above</span>
+            </div>
+          </div>
 
             <div class="gallery-layout">
               <h1>gallery</h1>
@@ -330,14 +338,12 @@
       <script src="js/main.js"></script>
     </div>
 
-
     <script src="js/main-conroller.js"></script>
     <script src="js/meme/meme-controller.js"></script>
     <script src="js/meme/meme-service.js"></script>
 
     <script src="js/share/share-controller.js"></script>
     <script src="js/share/share-service.js"></script>
-    <script src="js/storage/storage-service.js"></script>
     <script src="js/gallery/gallery-controller.js"></script>
     <script src="js/gallery/gallery-service.js"></script>
   </body>

@@ -1,5 +1,4 @@
 .gallery-layout {
-  /* border: 1px solid black; */
   padding: 0px;
   width:100%;
   margin: 0 auto;
@@ -14,8 +13,6 @@
   cursor:pointer;
 }
 .search-gallery {
-    /* width:100%;
-    border: 1px solid black; */
     padding: 0px;
     text-align: left;
     padding-top: 10px;
@@ -25,6 +22,26 @@
 
 .keyword-cloud-item {
   margin: 5px;
+}
+.keyword-cloud-item {
+  font-weight:900;
+  color:black;
+  background-color:#ff7f00;
+
+}
+.search-wordcloud-desc {
+  font-size: 18px;
+  color:gray;
+}
+.search-keyword-cloud > * {
+  border-radius:30px;
+  border:3px solid #ff7f00;
+  padding:8px;
+  background-color:#ff7f00;
+}
+.search-keyword-cloud-con {
+  text-align:center;
+  /* background-color: aqua; */
 }
 .search-keyword-cloud {
   width:100%;
@@ -40,6 +57,7 @@
   border-radius: 10px;
 }
 .keyword-desc {
-  font-size:25px;
+  font-size:20px;
   border-radius: 10px;
+  font-family:sans-serif;
 }

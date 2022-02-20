@@ -2,7 +2,7 @@
 function init() {
   console.log("app is ready");
 
-  gElCanvas = document.querySelector("#my-canvas");
+  initGelCanvas()
   gCtx = gElCanvas.getContext("2d");
 
   addCanvasListeners();
@@ -10,9 +10,8 @@ function init() {
   window.addEventListener("resize", resizeCanvas);
   gCurrAddPos = "up";
 
-  renderMeme(gMeme);
+  renderMeme();
   renderGallery();
   renderKeywordCloud();
   onSwitchToGallery();
 }
-
