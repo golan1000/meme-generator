@@ -13,7 +13,9 @@
         <div class="header-section1">
           <div class="padding-section1"></div>
           <div class="header-logo">
-            <span class="logo-title" onclick="onSwitchToGallery()">memegen</span>
+            <span class="logo-title" onclick="onSwitchToGallery()"
+              >memegen</span
+            >
           </div>
         </div>
         <div class="header-section2">
@@ -55,7 +57,9 @@
                     id="meme-text"
                     type="text"
                     value=""
+                    placeholder="input meme text"
                     oninput="onTextInput(this)"
+                    onfocusout="onTextInputFocusOut()"
                   />
                 </div>
                 <!-- line 2 of menu -->
@@ -179,12 +183,15 @@
                     type="color"
                     name="borderColor"
                     class="color-p"
+                    id="borderColor"
                     oninput="onChangeBorderColor(event)"
                   />
                   <input
                     type="color"
                     name="paintColor"
                     class="color-p"
+                    id="paintColor"
+                    value="#ffffff"
                     oninput="onChangePaintColor(event)"
                   />
                 </div>
@@ -300,7 +307,11 @@
       <div class="mobile-menu-con">
         <div class="mobile-menu">
           <div class="mobile-menu-top">
-            <div><span class="logo-title-mobile" onclick="onSwitchToGallery()">memegen</span></div>
+            <div>
+              <span class="logo-title-mobile" onclick="onSwitchToGallery()"
+                >memegen</span
+              >
+            </div>
             <div onclick="onCloseMobileMenu()">
               <span class="mobile-menu-x">X</span>
             </div>
@@ -318,12 +329,16 @@
       </footer>
       <script src="js/main.js"></script>
     </div>
-    <!-- <script src="js/gallery/gallery-controller.js"></script>
-    <script src="js/gallery/gallery-service.js"></script>
 
+
+    <script src="js/main-conroller.js"></script>
     <script src="js/meme/meme-controller.js"></script>
     <script src="js/meme/meme-service.js"></script>
 
-    <script src="js/storage/storage-service.js"></script> -->
+    <script src="js/share/share-controller.js"></script>
+    <script src="js/share/share-service.js"></script>
+    <script src="js/storage/storage-service.js"></script>
+    <script src="js/gallery/gallery-controller.js"></script>
+    <script src="js/gallery/gallery-service.js"></script>
   </body>
 </html>
